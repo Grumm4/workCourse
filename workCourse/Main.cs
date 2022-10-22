@@ -29,6 +29,7 @@ namespace workCourse
 
             MySqlDataReader reader = command.ExecuteReader();
             List<string[]> data = new List<string[]>();
+
             while (reader.Read())
             {
                 data.Add(new string[5]);
