@@ -119,15 +119,17 @@ namespace workCourse
             }
 
         }
+        public string pass = "";
         public void textChang()
         {
-            pass = textBox2.Text;
+            pass += textBox2.Text;
+            textBox2.Text = System.Text.RegularExpressions.Regex.Replace($"{textBox2.Text}", @"\d", "*");
+            pass = pass.Replace($"*", "");
         }
-        public string pass = "";
+        
         private void textBox2_TextChanged(object sender, EventArgs e)
         {
-            textBox2.Text += "*";
-            
+            textChang();
         }
     }
 }

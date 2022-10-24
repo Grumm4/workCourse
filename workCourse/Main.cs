@@ -48,11 +48,19 @@ namespace workCourse
 
         private void button1_Click(object sender, EventArgs e)
         {
+            Application.Exit();   
+        }
+
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
             Form1 form = new Form1();
-            //this.Close();
-            //form.Close();
-            Application.Exit();
-            
+            this.Hide();
+            form.Show();
         }
     }
 }
