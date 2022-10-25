@@ -66,6 +66,8 @@ namespace workCourse
         private void Form1_Load(object sender, EventArgs e)
         {
             conn = new MySqlConnection(connStr);
+            button1.BackColor = Color.FromArgb(15, 51, 117);
+            button2.BackColor = Color.FromArgb(15, 51, 117);
         }
 
         Main main = new Main();
@@ -76,6 +78,7 @@ namespace workCourse
 
         private void button1_Click(object sender, EventArgs e)
         {
+            
             //Запрос в БД на предмет того, если ли строка с подходящим логином и паролем
             string sql = "SELECT * FROM t_user WHERE loginUser = @un and  passUser= @up";
             //Открытие соединения
@@ -99,6 +102,16 @@ namespace workCourse
             //Закрываем соединение
             conn.Close();
             //Если вернулась больше 0 строк, значит такой пользователь существует
+            if (textBox1.Text.Length == 0)
+            {
+                label1.BackColor = Color.FromArgb(155, 4, 0);
+                textBox1.BackColor = Color.FromArgb(155, 4, 0);
+            }
+            if (textBox2.Text.Length == 0)
+            {
+                label2.BackColor = Color.FromArgb(155, 4, 0);
+                textBox2.BackColor = Color.FromArgb(155, 4, 0);
+            }
             if (table.Rows.Count > 0)
             {
                 //Присваеваем глобальный признак авторизации
@@ -106,17 +119,20 @@ namespace workCourse
                 //Достаем данные пользователя в случае успеха
                 GetUserInfo(textBox1.Text);
                 //Закрываем форму
-                
                 this.Hide();
-
                 main.Show();
 
             }
             else
             {
+                if (textBox1.Text.Length == 0 || textBox2.Text.Length == 0) MessageBox.Show("Поля не должны оставаться пустыми!", "Ошибка входа:");
+                else if ((textBox1.Text.Length > 0 || textBox2.Text.Length > 0) && table.Rows.Count == 0) MessageBox.Show("Неверные данные авторизации!", "Ошибка входа:");
                 //Отобразить сообщение о том, что авторизаия неуспешна
-                MessageBox.Show("Неверные данные авторизации!");
+
+                //textBox1.BackColor = Color.Red;
+                //textBox2.BackColor = Color.Red;
             }
+            
 
         }
         public string pass = "";
@@ -130,6 +146,15 @@ namespace workCourse
         private void textBox2_TextChanged(object sender, EventArgs e)
         {
             textChang();
+            textBox2.SelectionStart = textBox2.Text.Length;
+            textBox2.BackColor = Color.White;
+            label2.BackColor = Color.White;
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+            textBox1.BackColor = Color.White;
+            label1.BackColor = Color.White;
         }
     }
 }
