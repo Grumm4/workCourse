@@ -18,11 +18,11 @@ namespace workCourse
         {
             InitializeComponent();
         }
-
+        static string connStr = "server=chuc.caseum.ru;port=33333;user=st_2_20_8;database=is_2_20_st8_KURS;password=82411770;";
+        MySqlConnection conn = new MySqlConnection(connStr);
         private void Main_Load(object sender, EventArgs e)
         {
-            string connStr = "server=chuc.caseum.ru;port=33333;user=st_2_20_8;database=is_2_20_st8_KURS;password=82411770;";
-            MySqlConnection conn = new MySqlConnection(connStr);
+            
             conn.Open();
             string query = "SELECT * FROM Main ORDER BY id";
             MySqlCommand command = new MySqlCommand(query, conn);
@@ -61,6 +61,15 @@ namespace workCourse
             Form1 form = new Form1();
             this.Hide();
             form.Show();
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            conn.Open();
+            string query = "SELECT SUM(`price`) FROM `Main`";
+            MySqlCommand command = new MySqlCommand(query, conn);
+            MessageBox.Show($"Общая цена всех товаров: {command.ExecuteScalar()}");
+            conn.Close();
         }
     }
 }

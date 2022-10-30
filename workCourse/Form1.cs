@@ -58,13 +58,31 @@ namespace workCourse
             // закрываем соединение с БД
             conn.Close();
         }
+        private ToolStripContainer toolStripContainer1;
+        private ToolStrip toolStrip1;
         public Form1()
         {
             InitializeComponent();
         }
+        void aboutItem_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("О программе");
+        }
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            //toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
+            //toolStrip1 = new System.Windows.Forms.ToolStrip();
+            //// Add items to the ToolStrip.
+            //toolStrip1.Items.Add("One");
+            //toolStrip1.Items.Add("Two");
+            ////toolStrip1.Items.Add("Three");
+            //// Add the ToolStrip to the top panel of the ToolStripContainer.
+            //toolStripContainer1.TopToolStripPanel.Controls.Add(toolStrip1);
+            //// Add the ToolStripContainer to the form.
+            //Controls.Add(toolStripContainer1);
+
+
             conn = new MySqlConnection(connStr);
             button1.BackColor = Color.FromArgb(15, 51, 117);
             button2.BackColor = Color.FromArgb(15, 51, 117);
@@ -155,6 +173,21 @@ namespace workCourse
         {
             textBox1.BackColor = Color.White;
             label1.BackColor = Color.White;
+        }
+
+        private void toolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void toolStripMenuItem3_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Информация о программе", "Main");
+        }
+
+        private void разработчикToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("telegram: @grumm4ik\nVK: vk.com/grumm4ik", "О создателе");
         }
     }
 }
