@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -66,9 +67,11 @@ namespace workCourse
         private void button3_Click(object sender, EventArgs e)
         {
             conn.Open();
-            string query = "SELECT SUM(`price`) FROM `Main`";
+            //Добавление всех price в коллекцию
+            string query = "SELECT SUM(`price`*`count`) FROM `Main`";
             MySqlCommand command = new MySqlCommand(query, conn);
-            MessageBox.Show($"Общая цена всех товаров: {command.ExecuteScalar()}");
+            //MySqlDataReader reader = command.ExecuteReader();
+            MessageBox.Show($"Общая цена всех товаров: {Math.Round(Convert.ToDecimal(command.ExecuteScalar()), 2)}");
             conn.Close();
         }
     }
