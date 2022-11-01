@@ -9,12 +9,14 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
+//using ClassOrder;
 
 namespace workCourse
 {
     public partial class Main : Form
     {
-        
+        //Order a = new Order();
+
         public Main()
         {
             InitializeComponent();
@@ -30,7 +32,7 @@ namespace workCourse
 
             MySqlDataReader reader = command.ExecuteReader();
             List<string[]> data = new List<string[]>();
-
+            //a.Zak();
             while (reader.Read())
             {
                 data.Add(new string[5]);
@@ -73,6 +75,12 @@ namespace workCourse
             //MySqlDataReader reader = command.ExecuteReader();
             MessageBox.Show($"Общая цена всех товаров: {Math.Round(Convert.ToDecimal(command.ExecuteScalar()), 2)}");
             conn.Close();
+        }
+        private void button4_Click(object sender, EventArgs e)
+        {
+            OrderForm of = new OrderForm();
+            this.Hide();
+            of.Show();
         }
     }
 }
