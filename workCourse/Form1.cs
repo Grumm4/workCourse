@@ -96,7 +96,49 @@ namespace workCourse
 
         private void button1_Click(object sender, EventArgs e)
         {
-            
+            Login();
+        }
+        public string pass = "";
+        public void textChang()
+        {
+            pass += textBox2.Text;
+            textBox2.Text = System.Text.RegularExpressions.Regex.Replace($"{textBox2.Text}", @"\d", "*");
+            pass = pass.Replace($"*", "");
+        }
+        
+        private void textBox2_TextChanged(object sender, EventArgs e)
+        {
+            textChang();
+            textBox2.SelectionStart = textBox2.Text.Length;
+            textBox2.BackColor = Color.White;
+            label2.BackColor = Color.White;
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+            textBox1.BackColor = Color.White;
+            label1.BackColor = Color.White;
+        }
+
+        private void toolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void toolStripMenuItem3_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Информация о программе", "Main");
+        }
+
+        private void разработчикToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("telegram: @grumm4ik\nVK: vk.com/grumm4ik", "О создателе");
+        }
+
+        
+
+        void Login()
+        {
             //Запрос в БД на предмет того, если ли строка с подходящим логином и паролем
             string sql = "SELECT * FROM t_user WHERE loginUser = @un and  passUser= @up";
             //Открытие соединения
@@ -150,44 +192,20 @@ namespace workCourse
                 //textBox1.BackColor = Color.Red;
                 //textBox2.BackColor = Color.Red;
             }
-            
+        }
 
-        }
-        public string pass = "";
-        public void textChang()
-        {
-            pass += textBox2.Text;
-            textBox2.Text = System.Text.RegularExpressions.Regex.Replace($"{textBox2.Text}", @"\d", "*");
-            pass = pass.Replace($"*", "");
-        }
         
-        private void textBox2_TextChanged(object sender, EventArgs e)
+
+        private void textBox1_KeyDown(object sender, KeyEventArgs e)
         {
-            textChang();
-            textBox2.SelectionStart = textBox2.Text.Length;
-            textBox2.BackColor = Color.White;
-            label2.BackColor = Color.White;
+            if (e.KeyData == Keys.Enter)
+                Login();
         }
 
-        private void textBox1_TextChanged(object sender, EventArgs e)
+        private void textBox2_KeyDown(object sender, KeyEventArgs e)
         {
-            textBox1.BackColor = Color.White;
-            label1.BackColor = Color.White;
-        }
-
-        private void toolStripMenuItem1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void toolStripMenuItem3_Click(object sender, EventArgs e)
-        {
-            MessageBox.Show("Информация о программе", "Main");
-        }
-
-        private void разработчикToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            MessageBox.Show("telegram: @grumm4ik\nVK: vk.com/grumm4ik", "О создателе");
+            if (e.KeyData == Keys.Enter)
+                Login();
         }
     }
 }

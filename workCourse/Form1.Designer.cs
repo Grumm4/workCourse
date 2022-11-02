@@ -56,6 +56,7 @@ namespace workCourse
             this.textBox1.Size = new System.Drawing.Size(230, 21);
             this.textBox1.TabIndex = 0;
             this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
+            this.textBox1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textBox1_KeyDown);
             // 
             // button1
             // 
@@ -91,6 +92,7 @@ namespace workCourse
             this.textBox2.Size = new System.Drawing.Size(230, 21);
             this.textBox2.TabIndex = 3;
             this.textBox2.TextChanged += new System.EventHandler(this.textBox2_TextChanged);
+            this.textBox2.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textBox2_KeyDown);
             // 
             // label1
             // 
@@ -153,14 +155,14 @@ namespace workCourse
             // toolStripMenuItem3
             // 
             this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-            this.toolStripMenuItem3.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(149, 22);
             this.toolStripMenuItem3.Text = "О программе";
             this.toolStripMenuItem3.Click += new System.EventHandler(this.toolStripMenuItem3_Click);
             // 
             // разработчикToolStripMenuItem
             // 
             this.разработчикToolStripMenuItem.Name = "разработчикToolStripMenuItem";
-            this.разработчикToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.разработчикToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
             this.разработчикToolStripMenuItem.Text = "Разработчик";
             this.разработчикToolStripMenuItem.Click += new System.EventHandler(this.разработчикToolStripMenuItem_Click);
             // 

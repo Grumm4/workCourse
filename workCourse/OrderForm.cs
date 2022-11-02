@@ -8,6 +8,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using ClassOrder;
+using static System.ComponentModel.Design.ObjectSelectorEditor;
+using System.Collections;
 
 namespace workCourse
 {
@@ -37,27 +40,34 @@ namespace workCourse
             MySqlConnection conn = new MySqlConnection(connStr);
             conn.Open();
 
-            string query = "SELECT title FROM Main";
+            //заполнение combobox1 названиями товаров
+            string query = "SELECT `title` FROM `Main`";
             MySqlCommand command = new MySqlCommand(query, conn);
-
             MySqlDataReader reader = command.ExecuteReader();
-            List<string[]> data = new List<string[]>();
-            
-            while (reader.Read())
-            {
-                
-
-                data[data.Count - 1][0] = reader[0].ToString();
-                
-            }
+            while (reader.Read()) { comboBox1.Items.Add(reader.GetString(0)); }
             reader.Close();
+
+
+            //заполнение combobox1 названиями поставщиков
+            query = "SELECT `name_provider` FROM `t_provider`";
+            command = new MySqlCommand(query, conn);
+            reader = command.ExecuteReader();
+            while (reader.Read()) { comboBox2.Items.Add(reader.GetString(0)); }
+            reader.Close();
+
             conn.Close();
-            int i = 0;
-            foreach (string[] s in data)
-            {
-                comboBox1.Items.Add(s[i]);
-                i++;
-            }
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            MySqlConnection conn = new MySqlConnection(connStr);
+            conn.Open();
+
+            //заполнение текстбокса с ценой
+            string query = $"SELECT `price` FROM `Main` WHERE `title` = '{comboBox1.SelectedItem}'";
+            MySqlCommand command = new MySqlCommand(query, conn);
+            MySqlDataReader reader = command.ExecuteReader();
+            while (reader.Read()) { textBox1.Text = (reader.GetString(0)); }
         }
     }
 }
