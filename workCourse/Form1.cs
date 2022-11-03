@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
+using Microsoft.Toolkit.Uwp.Notifications;
 
 namespace workCourse
 {
@@ -58,8 +59,7 @@ namespace workCourse
             // закрываем соединение с БД
             conn.Close();
         }
-        private ToolStripContainer toolStripContainer1;
-        private ToolStrip toolStrip1;
+        
         public Form1()
         {
             InitializeComponent();
@@ -135,7 +135,7 @@ namespace workCourse
             MessageBox.Show("telegram: @grumm4ik\nVK: vk.com/grumm4ik", "О создателе");
         }
 
-        
+
 
         void Login()
         {
@@ -181,6 +181,13 @@ namespace workCourse
                 //Закрываем форму
                 this.Hide();
                 main.Show();
+                new ToastContentBuilder()
+                    .AddArgument("action", "viewConversation")
+                    .AddArgument("conversationId", 9813)
+                    .AddText("Выполнен вход")
+                    .AddText($"Пользователь: {textBox1.Text}")
+                    .AddAppLogoOverride(new Uri("C:\\Users\\Kirill\\Desktop\\1\\1\\materials\\bg.jpg"), ToastGenericAppLogoCrop.Circle)
+                    .Show(); // Not seeing the Show() me
 
             }
             else
@@ -192,6 +199,9 @@ namespace workCourse
                 //textBox1.BackColor = Color.Red;
                 //textBox2.BackColor = Color.Red;
             }
+            
+
+
         }
 
         

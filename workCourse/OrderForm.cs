@@ -11,6 +11,8 @@ using System.Windows.Forms;
 using ClassOrder;
 using static System.ComponentModel.Design.ObjectSelectorEditor;
 using System.Collections;
+using Microsoft.VisualBasic;
+using Org.BouncyCastle.Utilities.Collections;
 
 namespace workCourse
 {
@@ -21,7 +23,6 @@ namespace workCourse
         {
             InitializeComponent();
         }
-
         
         private void button1_Click(object sender, EventArgs e)
         {
@@ -32,7 +33,7 @@ namespace workCourse
 
         private void numericUpDown1_ValueChanged(object sender, EventArgs e)
         {
-            textBox1.Text+=numericUpDown1.Value;
+            PriceEntry();
         }
 
         private void OrderForm_Load(object sender, EventArgs e)
@@ -48,7 +49,7 @@ namespace workCourse
             reader.Close();
 
 
-            //заполнение combobox1 названиями поставщиков
+            //заполнение combobox2 названиями поставщиков
             query = "SELECT `name_provider` FROM `t_provider`";
             command = new MySqlCommand(query, conn);
             reader = command.ExecuteReader();
@@ -60,14 +61,41 @@ namespace workCourse
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
+            PriceEntry();
+        }
+
+        void PriceEntry()
+        {
             MySqlConnection conn = new MySqlConnection(connStr);
             conn.Open();
 
-            //заполнение текстбокса с ценой
-            string query = $"SELECT `price` FROM `Main` WHERE `title` = '{comboBox1.SelectedItem}'";
+            if (numericUpDown1.Value > -1)
+            {
+                string query = $"SELECT `price` FROM `Main` WHERE `title` = '{comboBox1.SelectedItem}'";
+                MySqlCommand command = new MySqlCommand(query, conn);
+                MySqlDataReader reader = command.ExecuteReader();
+                string price = "";
+                double res = 0;
+                while (reader.Read()) { price = (reader.GetString(0)); res = Convert.ToDouble(price) * Convert.ToDouble(numericUpDown1.Value); textBox1.Text = Convert.ToString(res); }
+            }
+            conn.Close();
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            MySqlConnection conn = new MySqlConnection(connStr);
+            conn.Open();
+
+            string query = $"UPDATE Main SET count = count + {numericUpDown1.Value} WHERE title = '{comboBox1.Text}'";
             MySqlCommand command = new MySqlCommand(query, conn);
-            MySqlDataReader reader = command.ExecuteReader();
-            while (reader.Read()) { textBox1.Text = (reader.GetString(0)); }
+            command.ExecuteNonQuery();
+
+            conn.Close();
         }
     }
 }
