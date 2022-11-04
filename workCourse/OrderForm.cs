@@ -88,6 +88,9 @@ namespace workCourse
 
         private void button2_Click(object sender, EventArgs e)
         {
+            Random rand = new Random();
+            byte a = Convert.ToByte(rand.Next(1, 2));
+            MessageBox.Show($"Заказ совершён, поступление через {a} час(ов)");
             MySqlConnection conn = new MySqlConnection(connStr);
             conn.Open();
 
