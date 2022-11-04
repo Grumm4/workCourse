@@ -9,13 +9,16 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
 using Microsoft.Toolkit.Uwp.Notifications;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace workCourse
 {
     public partial class Form1 : Form
     {
-        // строка подключения к БД
-        string connStr = "server=chuc.caseum.ru;port=33333;user=st_2_20_8;database=is_2_20_st8_KURS;password=82411770;";
+        public string pass = "";
+        static string connStr = "server=chuc.caseum.ru;port=33333;user=st_2_20_8;database=is_2_20_st8_KURS;password=82411770;";
+
+
         //Переменная соединения
         MySqlConnection conn;
         //Логин и пароль к данной форме Вы сможете посмотреть в БД db_test таблице t_user
@@ -71,38 +74,20 @@ namespace workCourse
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            //toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
-            //toolStrip1 = new System.Windows.Forms.ToolStrip();
-            //// Add items to the ToolStrip.
-            //toolStrip1.Items.Add("One");
-            //toolStrip1.Items.Add("Two");
-            ////toolStrip1.Items.Add("Three");
-            //// Add the ToolStrip to the top panel of the ToolStripContainer.
-            //toolStripContainer1.TopToolStripPanel.Controls.Add(toolStrip1);
-            //// Add the ToolStripContainer to the form.
-            //Controls.Add(toolStripContainer1);
-
-
             conn = new MySqlConnection(connStr);
             button1.BackColor = Color.FromArgb(15, 51, 117);
             button2.BackColor = Color.FromArgb(15, 51, 117);
         }
 
         Main main = new Main();
-        private void button2_Click(object sender, EventArgs e)
-        {
-            Application.Exit();
-        }
+        private void button2_Click(object sender, EventArgs e) => Application.Exit();
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            Login();
-        }
-        public string pass = "";
+        private void button1_Click(object sender, EventArgs e) => Login();
+
         public void textChang()
         {
             pass += textBox2.Text;
-            textBox2.Text = System.Text.RegularExpressions.Regex.Replace($"{textBox2.Text}", @"\d", "*");
+            textBox2.Text = System.Text.RegularExpressions.Regex.Replace($"{textBox2.Text}", @".", "*");
             pass = pass.Replace($"*", "");
         }
         
@@ -120,22 +105,9 @@ namespace workCourse
             label1.BackColor = Color.White;
         }
 
-        private void toolStripMenuItem1_Click(object sender, EventArgs e)
-        {
+        private void toolStripMenuItem3_Click(object sender, EventArgs e) => MessageBox.Show("Информация о программе", "Main");
 
-        }
-
-        private void toolStripMenuItem3_Click(object sender, EventArgs e)
-        {
-            MessageBox.Show("Информация о программе", "Main");
-        }
-
-        private void разработчикToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            MessageBox.Show("telegram: @grumm4ik\nVK: vk.com/grumm4ik", "О создателе");
-        }
-
-
+        private void разработчикToolStripMenuItem_Click(object sender, EventArgs e) => MessageBox.Show("telegram: @grumm4ik\nVK: vk.com/grumm4ik", "О создателе");
 
         void Login()
         {
@@ -188,23 +160,37 @@ namespace workCourse
                     .AddText($"Пользователь: {textBox1.Text}")
                     .AddAppLogoOverride(new Uri("C:\\Users\\Kirill\\Desktop\\1\\1\\materials\\bg.jpg"), ToastGenericAppLogoCrop.Circle)
                     .Show(); // Not seeing the Show() me
-
             }
             else
             {
-                if (textBox1.Text.Length == 0 || textBox2.Text.Length == 0) MessageBox.Show("Поля не должны оставаться пустыми!", "Ошибка входа:");
-                else if ((textBox1.Text.Length > 0 || textBox2.Text.Length > 0) && table.Rows.Count == 0) MessageBox.Show("Неверные данные авторизации!", "Ошибка входа:");
-                //Отобразить сообщение о том, что авторизаия неуспешна
-
-                //textBox1.BackColor = Color.Red;
-                //textBox2.BackColor = Color.Red;
+                if (textBox1.Text.Length == 0 || textBox2.Text.Length == 0) 
+                { 
+                    MessageBox.Show("Поля не должны оставаться пустыми!", "Ошибка входа:"); 
+                    
+                    
+                }
+                if (table.Rows.Count == 0) 
+                {
+                    MessageBox.Show("Неверные данные авторизации!", "Ошибка входа:");
+                    if (textBox1.Text.Length > 0 && textBox2.Text.Length > 0) 
+                    {
+                        textBox1.Text = "";
+                        textBox2.Text = "";
+                        
+                    }
+                    if (textBox2.Text.Length > 0 && textBox1.Text.Length == 0)
+                    {
+                        textBox2.Text = "";
+                    }
+                    if (textBox1.Text.Length > 0 && textBox2.Text.Length == 0)
+                    {
+                        textBox1.Text = "";
+                    }
+                    //if (textBox2.Text.Length !> 0 && textBox1.Text.Length > 0) { textBox1.Text = ""; }
+                    //if (textBox1.Text.Length > 0 && textBox2.Text.Length > 0) { textBox1.Text = ""; textBox2.Text = ""; }
+                }
             }
-            
-
-
         }
-
-        
 
         private void textBox1_KeyDown(object sender, KeyEventArgs e)
         {

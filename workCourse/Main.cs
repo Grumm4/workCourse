@@ -9,14 +9,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
-//using ClassOrder;
 
 namespace workCourse
 {
     public partial class Main : Form
     {
-        //Order a = new Order();
-
         public Main()
         {
             InitializeComponent();
@@ -25,7 +22,6 @@ namespace workCourse
         MySqlConnection conn = new MySqlConnection(connStr);
         private void Main_Load(object sender, EventArgs e)
         {
-            
             conn.Open();
             string query = "SELECT * FROM Main ORDER BY id";
             MySqlCommand command = new MySqlCommand(query, conn);
@@ -54,11 +50,6 @@ namespace workCourse
             Application.Exit();   
         }
 
-        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
-
         private void button2_Click(object sender, EventArgs e)
         {
             Form1 form = new Form1();
@@ -81,6 +72,14 @@ namespace workCourse
             OrderForm of = new OrderForm();
             this.Hide();
             of.Show();
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            SellingForm sf = new SellingForm();
+            this.Hide();
+            sf.Show();
+
         }
     }
 }
