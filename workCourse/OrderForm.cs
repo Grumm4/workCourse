@@ -96,19 +96,21 @@ namespace workCourse
 
         }
 
-        private void button2_Click(object sender, EventArgs e)
-        {
-            Random rand = new Random();
-            byte a = Convert.ToByte(rand.Next(1, 2));
-            MessageBox.Show($"Заказ совершён, поступление через {a} час(ов)");
-            MySqlConnection conn = new MySqlConnection(connStr);
-            conn.Open();
+        
 
-            string query = $"UPDATE Main SET count = count + {numericUpDown1.Value} WHERE title = '{comboBox1.Text}'";
-            MySqlCommand command = new MySqlCommand(query, conn);
-            command.ExecuteNonQuery();
+        //private void button2_Click_1(object sender, EventArgs e)
+        //{
+        //    Random rand = new Random();
+        //    byte a = Convert.ToByte(rand.Next(1, 2));
+        //    MessageBox.Show($"Заказ совершён, поступление через {a} час(ов)");
+        //    MySqlConnection conn = new MySqlConnection(connStr);
+        //    conn.Open();
 
-            conn.Close();
-        }
+        //    string query = $"UPDATE Main SET count = count + {numericUpDown1.Value} WHERE title = '{comboBox1.Text}'";
+        //    MySqlCommand command = new MySqlCommand(query, conn);
+        //    command.ExecuteNonQuery();
+
+        //    conn.Close();
+        //}
     }
 }
