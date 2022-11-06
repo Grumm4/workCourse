@@ -16,7 +16,7 @@ namespace workCourse
     public partial class Form1 : Form
     {
         public string pass = "";
-        static string connStr = "server=chuc.caseum.ru;port=33333;user=st_2_20_8;database=is_2_20_st8_KURS;password=82411770;";
+        public static string connStr = "server=chuc.caseum.ru;port=33333;user=st_2_20_8;database=is_2_20_st8_KURS;password=82411770;";
 
 
         //Переменная соединения
@@ -87,7 +87,7 @@ namespace workCourse
         public void textChang()
         {
             pass += textBox2.Text;
-            textBox2.Text = System.Text.RegularExpressions.Regex.Replace($"{textBox2.Text}", @".", "*");
+            textBox2.Text = System.Text.RegularExpressions.Regex.Replace($"{textBox2.Text}", @"\w", "*");
             pass = pass.Replace($"*", "");
         }
         
@@ -111,8 +111,18 @@ namespace workCourse
 
         void Login()
         {
+            if (textBox1.Text.Length == 0)
+            {
+                label1.BackColor = Color.FromArgb(155, 4, 0);
+                textBox1.BackColor = Color.FromArgb(155, 4, 0);
+            }
+            if (textBox2.Text.Length == 0)
+            {
+                label2.BackColor = Color.FromArgb(155, 4, 0);
+                textBox2.BackColor = Color.FromArgb(155, 4, 0);
+            }
             //Запрос в БД на предмет того, если ли строка с подходящим логином и паролем
-            string sql = "SELECT * FROM t_user WHERE loginUser = @un and  passUser= @up";
+            string sql = "SELECT * FROM t_user WHERE loginUser = @un and passUser = @up";
             //Открытие соединения
             conn.Open();
             //Объявляем таблицу
@@ -134,22 +144,19 @@ namespace workCourse
             //Закрываем соединение
             conn.Close();
             //Если вернулась больше 0 строк, значит такой пользователь существует
-            if (textBox1.Text.Length == 0)
-            {
-                label1.BackColor = Color.FromArgb(155, 4, 0);
-                textBox1.BackColor = Color.FromArgb(155, 4, 0);
-            }
-            if (textBox2.Text.Length == 0)
-            {
-                label2.BackColor = Color.FromArgb(155, 4, 0);
-                textBox2.BackColor = Color.FromArgb(155, 4, 0);
-            }
+            
             if (table.Rows.Count > 0)
             {
+                table = null;
+                adapter = null;
+                pass = null;
+                command = null;
+
                 //Присваеваем глобальный признак авторизации
                 Auth.auth = true;
                 //Достаем данные пользователя в случае успеха
                 GetUserInfo(textBox1.Text);
+                
                 //Закрываем форму
                 this.Hide();
                 main.Show();
@@ -163,6 +170,8 @@ namespace workCourse
             }
             else
             {
+                
+
                 if (textBox1.Text.Length == 0 || textBox2.Text.Length == 0) 
                 { 
                     MessageBox.Show("Поля не должны оставаться пустыми!", "Ошибка входа:"); 
@@ -171,24 +180,31 @@ namespace workCourse
                 }
                 if (table.Rows.Count == 0) 
                 {
+                    
+                    //command.Parameters.Clear();
+
                     MessageBox.Show("Неверные данные авторизации!", "Ошибка входа:");
                     if (textBox1.Text.Length > 0 && textBox2.Text.Length > 0) 
                     {
-                        textBox1.Text = "";
-                        textBox2.Text = "";
+                        textBox1.Text = null;
+                        textBox2.Text = null;
                         
                     }
                     if (textBox2.Text.Length > 0 && textBox1.Text.Length == 0)
                     {
-                        textBox2.Text = "";
+                        textBox2.Text = null;
                     }
                     if (textBox1.Text.Length > 0 && textBox2.Text.Length == 0)
                     {
-                        textBox1.Text = "";
+                        textBox1.Text = null;
                     }
                     //if (textBox2.Text.Length !> 0 && textBox1.Text.Length > 0) { textBox1.Text = ""; }
                     //if (textBox1.Text.Length > 0 && textBox2.Text.Length > 0) { textBox1.Text = ""; textBox2.Text = ""; }
                 }
+                table = null;
+                adapter = null;
+                pass = null;
+                command = null;
             }
         }
 

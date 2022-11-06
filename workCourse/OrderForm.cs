@@ -18,7 +18,6 @@ namespace workCourse
 {
     public partial class OrderForm : Form
     {
-        public static string connStr = "server=chuc.caseum.ru;port=33333;user=st_2_20_8;database=is_2_20_st8_KURS;password=82411770;";
         public OrderForm() => InitializeComponent();
 
         private void button1_Click(object sender, EventArgs e)
@@ -32,7 +31,7 @@ namespace workCourse
 
         private void OrderForm_Load(object sender, EventArgs e)
         {
-            MySqlConnection conn = new MySqlConnection(connStr);
+            MySqlConnection conn = new MySqlConnection(Form1.connStr);
             conn.Open();
 
             //заполнение combobox1 названиями товаров
@@ -43,11 +42,11 @@ namespace workCourse
             reader.Close();
 
             //заполнение combobox2 названиями поставщиков
-            query = "SELECT `name_provider` FROM `t_provider`";
-            command = new MySqlCommand(query, conn);
-            reader = command.ExecuteReader();
-            while (reader.Read()) { comboBox2.Items.Add(reader.GetString(0)); }
-            reader.Close();
+            //query = "SELECT `name_provider` FROM `t_provider`";
+            //command = new MySqlCommand(query, conn);
+            //reader = command.ExecuteReader();
+            //while (reader.Read()) { comboBox2.Items.Add(reader.GetString(0)); }
+            //reader.Close();
 
             conn.Close();
         }
@@ -56,13 +55,10 @@ namespace workCourse
 
         private void button2_Click(object sender, EventArgs e)
         {
-            Random rand = new Random();
-            byte a = Convert.ToByte(rand.Next(1, 2));
-            //MessageBox.Show($"Заказ совершён, поступление через {a} час(ов)");
-            MySqlConnection conn = new MySqlConnection(connStr);
+            MySqlConnection conn = new MySqlConnection(Form1.connStr);
             conn.Open();
 
-            string query = $"UPDATE Main SET count = count + {numericUpDown1.Value} WHERE title = '{comboBox1.Text}'";
+            string query = $"UPDATE Main SET count = count + {numericUpDown1.Value}, WHERE title = '{comboBox1.Text}'";
             MySqlCommand command = new MySqlCommand(query, conn);
             command.ExecuteNonQuery();
             if(MessageBox.Show("Заказ совершён, вернуться на главную страницу?", "", MessageBoxButtons.YesNo) == DialogResult.Yes)
@@ -76,7 +72,7 @@ namespace workCourse
 
         void PriceEntry()
         {
-            MySqlConnection conn = new MySqlConnection(connStr);
+            MySqlConnection conn = new MySqlConnection(Form1.connStr);
             conn.Open();
 
             if (numericUpDown1.Value > -1)

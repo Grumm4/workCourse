@@ -18,8 +18,7 @@ namespace workCourse
         {
             InitializeComponent();
         }
-        static string connStr = "server=chuc.caseum.ru;port=33333;user=st_2_20_8;database=is_2_20_st8_KURS;password=82411770;";
-        MySqlConnection conn = new MySqlConnection(connStr);
+        MySqlConnection conn = new MySqlConnection(Form1.connStr);
         private void Main_Load(object sender, EventArgs e)
         {
             conn.Open();
