@@ -109,7 +109,7 @@ namespace workCourse
 
         private void разработчикToolStripMenuItem_Click(object sender, EventArgs e) => MessageBox.Show("telegram: @grumm4ik\nVK: vk.com/grumm4ik", "О создателе");
 
-        void Login()
+        async void Login()
         {
             if (textBox1.Text.Length == 0)
             {
@@ -147,10 +147,7 @@ namespace workCourse
             
             if (table.Rows.Count > 0)
             {
-                table = null;
-                adapter = null;
-                pass = null;
-                command = null;
+                
 
                 //Присваеваем глобальный признак авторизации
                 Auth.auth = true;
@@ -167,6 +164,10 @@ namespace workCourse
                     .AddText($"Пользователь: {textBox1.Text}")
                     .AddAppLogoOverride(new Uri("C:\\Users\\Kirill\\Desktop\\1\\1\\materials\\bg.jpg"), ToastGenericAppLogoCrop.Circle)
                     .Show(); // Not seeing the Show() me
+                table = null;
+                adapter = null;
+                pass = null;
+                command = null;
             }
             else
             {
@@ -178,34 +179,30 @@ namespace workCourse
                     
                     
                 }
-                if (table.Rows.Count == 0) 
+                if (table.Rows.Count == 0)
                 {
-                    
-                    //command.Parameters.Clear();
-
+                    DeleteText();
                     MessageBox.Show("Неверные данные авторизации!", "Ошибка входа:");
-                    if (textBox1.Text.Length > 0 && textBox2.Text.Length > 0) 
-                    {
-                        textBox1.Text = null;
-                        textBox2.Text = null;
-                        
-                    }
-                    if (textBox2.Text.Length > 0 && textBox1.Text.Length == 0)
-                    {
-                        textBox2.Text = null;
-                    }
-                    if (textBox1.Text.Length > 0 && textBox2.Text.Length == 0)
-                    {
-                        textBox1.Text = null;
-                    }
-                    //if (textBox2.Text.Length !> 0 && textBox1.Text.Length > 0) { textBox1.Text = ""; }
-                    //if (textBox1.Text.Length > 0 && textBox2.Text.Length > 0) { textBox1.Text = ""; textBox2.Text = ""; }
                 }
                 table = null;
                 adapter = null;
                 pass = null;
                 command = null;
             }
+        }
+        internal void DeleteText()
+        {
+            if (InvokeRequired)
+            {
+                this.Invoke(new Action(async () => await Task.Run(() => textBox1.Text = "")));
+                this.Invoke(new Action(async () => await Task.Run(() => textBox2.Text = "")));
+            }
+            else
+            {
+                textBox1.Text = "";
+                textBox2.Text = "";
+            }
+            
         }
 
         private void textBox1_KeyDown(object sender, KeyEventArgs e)
