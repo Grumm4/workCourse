@@ -14,34 +14,91 @@ namespace workCourse
 {
     public partial class Main : Form
     {
+        public int offset = 0;
+        public decimal limit = 10;
+        public int numFirPage = 1;
+        public decimal numLastPage = 0;
         public Main()
         {
             InitializeComponent();
         }
         MySqlConnection conn = new MySqlConnection(Form1.connStr);
-        private void Main_Load(object sender, EventArgs e)
+        //delegate void Function();
+        void Page(int offset, decimal limit)
         {
-            conn.Open();
-            string query = "SELECT * FROM Main ORDER BY id";
-            MySqlCommand command = new MySqlCommand(query, conn);
 
-            MySqlDataReader reader = command.ExecuteReader();
+            
+            dataGridView1.Rows.Clear();
+            conn.Open();
+            string load = $"SELECT * FROM Main LIMIT {limit} OFFSET {offset}";
+            
+            MySqlCommand cmd = new MySqlCommand(load, conn);
+            MySqlDataReader read = cmd.ExecuteReader();
             List<string[]> data = new List<string[]>();
-            //a.Zak();
-            while (reader.Read())
+            while (read.Read())
             {
                 data.Add(new string[5]);
 
-                data[data.Count - 1][0] = reader[0].ToString();
-                data[data.Count - 1][1] = reader[1].ToString();
-                data[data.Count - 1][2] = reader[2].ToString();
-                data[data.Count - 1][3] = reader[3].ToString();
-                data[data.Count - 1][4] = reader[4].ToString();
+                data[data.Count - 1][0] = read[0].ToString();
+                data[data.Count - 1][1] = read[1].ToString();
+                data[data.Count - 1][2] = read[2].ToString();
+                data[data.Count - 1][3] = read[3].ToString();
+                data[data.Count - 1][4] = read[4].ToString();
             }
-            reader.Close();
-            conn.Close();
             foreach (string[] s in data)
                 dataGridView1.Rows.Add(s);
+
+            string count = "SELECT COUNT(*) FROM Main";
+            MySqlCommand cmd2 = new MySqlCommand(count, conn);
+            read.Close();
+
+            decimal read2 = Convert.ToInt32(cmd2.ExecuteScalar());
+            decimal pag = Math.Round((read2 / limit), MidpointRounding.ToPositiveInfinity);
+
+            numLastPage = pag;
+            conn.Close();
+
+            label1.Text = $"Страница {numFirPage}/{pag}";
+
+            
+            
+
+
+
+
+
+            
+        }
+        public void Main_Load(object sender, EventArgs e)
+        {
+            
+            Page(offset, limit);
+            
+            //string query = "SELECT * FROM Main ORDER BY id";
+
+            //MySqlCommand command = new MySqlCommand(query, conn);
+            
+
+            //MySqlDataReader reader = command.ExecuteReader();
+            //List<string[]> data = new List<string[]>();
+            //a.Zak();
+            //while (reader.Read())
+            //{
+            //    data.Add(new string[5]);
+
+            //    data[data.Count - 1][0] = reader[0].ToString();
+            //    data[data.Count - 1][1] = reader[1].ToString();
+            //    data[data.Count - 1][2] = reader[2].ToString();
+            //    data[data.Count - 1][3] = reader[3].ToString();
+            //    data[data.Count - 1][4] = reader[4].ToString();
+            //}
+           
+            //foreach (string[] s in data)
+            //    dataGridView1.Rows.Add(s);
+
+
+
+            
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -79,6 +136,49 @@ namespace workCourse
             this.Hide();
             sf.Show();
 
+        }
+
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            
+            numFirPage++;
+            offset += Convert.ToInt32(limit);
+            Page(offset, limit);
+            if (numFirPage > numLastPage)
+            {
+                numFirPage--;
+                offset -= Convert.ToInt32(limit);
+                Page(offset, limit);
+            }
+            else
+            {
+                
+            }
+            
+
+            
+            
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            numFirPage--;
+            offset -= Convert.ToInt32(limit);
+            //limit -= limit;
+            if (offset == -10)
+            {
+                numFirPage = 1;
+                offset += Convert.ToInt32(limit);
+                Page(offset, limit);
+            }
+            else
+                Page(offset, limit);
+            
         }
     }
 }

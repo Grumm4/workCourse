@@ -40,13 +40,16 @@ namespace workCourse
             this.button3 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
             this.button5 = new System.Windows.Forms.Button();
+            this.button6 = new System.Windows.Forms.Button();
+            this.button7 = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
             // button1
             // 
             this.button1.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.button1.Location = new System.Drawing.Point(12, 405);
+            this.button1.Location = new System.Drawing.Point(7, 404);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(149, 43);
             this.button1.TabIndex = 0;
@@ -68,14 +71,15 @@ namespace workCourse
             this.Column4,
             this.Column5});
             this.dataGridView1.GridColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.dataGridView1.Location = new System.Drawing.Point(12, 12);
+            this.dataGridView1.Location = new System.Drawing.Point(7, 12);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
             this.dataGridView1.RowHeadersVisible = false;
             this.dataGridView1.RowTemplate.Height = 25;
             this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView1.Size = new System.Drawing.Size(774, 389);
+            this.dataGridView1.Size = new System.Drawing.Size(779, 389);
             this.dataGridView1.TabIndex = 1;
+            this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
             // 
             // Column1
             // 
@@ -119,7 +123,7 @@ namespace workCourse
             // button2
             // 
             this.button2.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.button2.Location = new System.Drawing.Point(167, 405);
+            this.button2.Location = new System.Drawing.Point(162, 404);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(149, 43);
             this.button2.TabIndex = 2;
@@ -130,9 +134,9 @@ namespace workCourse
             // button3
             // 
             this.button3.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.button3.Location = new System.Drawing.Point(637, 405);
+            this.button3.Location = new System.Drawing.Point(632, 404);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(149, 43);
+            this.button3.Size = new System.Drawing.Size(154, 43);
             this.button3.TabIndex = 3;
             this.button3.Text = "Общая цена товаров";
             this.button3.UseVisualStyleBackColor = true;
@@ -141,7 +145,7 @@ namespace workCourse
             // button4
             // 
             this.button4.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.button4.Location = new System.Drawing.Point(477, 405);
+            this.button4.Location = new System.Drawing.Point(472, 404);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(154, 43);
             this.button4.TabIndex = 4;
@@ -152,7 +156,7 @@ namespace workCourse
             // button5
             // 
             this.button5.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.button5.Location = new System.Drawing.Point(322, 405);
+            this.button5.Location = new System.Drawing.Point(317, 404);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(149, 43);
             this.button5.TabIndex = 5;
@@ -160,12 +164,46 @@ namespace workCourse
             this.button5.UseVisualStyleBackColor = true;
             this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
+            // button6
+            // 
+            this.button6.Font = new System.Drawing.Font("Segoe UI", 21.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.button6.Location = new System.Drawing.Point(12, 330);
+            this.button6.Name = "button6";
+            this.button6.Size = new System.Drawing.Size(106, 54);
+            this.button6.TabIndex = 6;
+            this.button6.Text = "<";
+            this.button6.UseVisualStyleBackColor = true;
+            this.button6.Click += new System.EventHandler(this.button6_Click);
+            // 
+            // button7
+            // 
+            this.button7.Font = new System.Drawing.Font("Segoe UI", 21.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.button7.Location = new System.Drawing.Point(679, 330);
+            this.button7.Name = "button7";
+            this.button7.Size = new System.Drawing.Size(106, 54);
+            this.button7.TabIndex = 7;
+            this.button7.Text = ">";
+            this.button7.UseVisualStyleBackColor = true;
+            this.button7.Click += new System.EventHandler(this.button7_Click);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.label1.Location = new System.Drawing.Point(322, 352);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(0, 32);
+            this.label1.TabIndex = 8;
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.ClientSize = new System.Drawing.Size(797, 458);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.button7);
+            this.Controls.Add(this.button6);
             this.Controls.Add(this.button5);
             this.Controls.Add(this.button4);
             this.Controls.Add(this.button3);
@@ -180,6 +218,7 @@ namespace workCourse
             this.Load += new System.EventHandler(this.Main_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -196,5 +235,8 @@ namespace workCourse
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.Button button6;
+        private System.Windows.Forms.Button button7;
+        private System.Windows.Forms.Label label1;
     }
 }
