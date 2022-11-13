@@ -26,8 +26,6 @@ namespace workCourse
         //delegate void Function();
         void Page(int offset, decimal limit)
         {
-
-            
             dataGridView1.Rows.Clear();
             conn.Open();
             string load = $"SELECT * FROM Main LIMIT {limit} OFFSET {offset}";
@@ -59,46 +57,10 @@ namespace workCourse
             conn.Close();
 
             label1.Text = $"Страница {numFirPage}/{pag}";
-
-            
-            
-
-
-
-
-
-            
         }
         public void Main_Load(object sender, EventArgs e)
         {
-            
-            Page(offset, limit);
-            
-            //string query = "SELECT * FROM Main ORDER BY id";
-
-            //MySqlCommand command = new MySqlCommand(query, conn);
-            
-
-            //MySqlDataReader reader = command.ExecuteReader();
-            //List<string[]> data = new List<string[]>();
-            //a.Zak();
-            //while (reader.Read())
-            //{
-            //    data.Add(new string[5]);
-
-            //    data[data.Count - 1][0] = reader[0].ToString();
-            //    data[data.Count - 1][1] = reader[1].ToString();
-            //    data[data.Count - 1][2] = reader[2].ToString();
-            //    data[data.Count - 1][3] = reader[3].ToString();
-            //    data[data.Count - 1][4] = reader[4].ToString();
-            //}
-           
-            //foreach (string[] s in data)
-            //    dataGridView1.Rows.Add(s);
-
-
-
-            
+            Page(offset, limit);            
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -145,7 +107,6 @@ namespace workCourse
 
         private void button7_Click(object sender, EventArgs e)
         {
-            
             numFirPage++;
             offset += Convert.ToInt32(limit);
             Page(offset, limit);
@@ -155,21 +116,12 @@ namespace workCourse
                 offset -= Convert.ToInt32(limit);
                 Page(offset, limit);
             }
-            else
-            {
-                
-            }
-            
-
-            
-            
         }
 
         private void button6_Click(object sender, EventArgs e)
         {
             numFirPage--;
             offset -= Convert.ToInt32(limit);
-            //limit -= limit;
             if (offset == -10)
             {
                 numFirPage = 1;
@@ -178,7 +130,6 @@ namespace workCourse
             }
             else
                 Page(offset, limit);
-            
         }
     }
 }

@@ -4,7 +4,8 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MySql.Data.MySqlClient;
+//using MySql.Data.MySqlClient;
+using System.Windows.Forms;
 
 
 
@@ -12,8 +13,23 @@ using MySql.Data.MySqlClient;
 
 namespace ClassOrder
 {
+    public delegate void a();
     public class Order
     {
+        internal void DeleteText(a)
+        {
+            if (this.Con)
+            {
+                a.Invoke(new Action(async () => await Task.Run(() => textBox1.Text = "")));
+                a.Invoke(new Action(async () => await Task.Run(() => textBox2.Text = "")));
+            }
+            else
+            {
+                textBox1.Text = "";
+                textBox2.Text = "";
+            }
+
+        }
         public Order()
         {
             

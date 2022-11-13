@@ -51,5 +51,12 @@ namespace workCourse
             while (reader.Read()) { comboBox1.Items.Add(reader.GetString(0)); }
             reader.Close();
         }
+
+        private void numericUpDown1_ValueChanged(object sender, EventArgs e) => Methods.PriceEntry(numericUpDown1, comboBox1, textBox1);
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Methods.PriceEntry(numericUpDown1, comboBox1, textBox1);
+        }
     }
 }

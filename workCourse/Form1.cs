@@ -56,7 +56,6 @@ namespace workCourse
                 // элементы массива [] - это значения столбцов из запроса SELECT
                 Auth.auth_id = reader[0].ToString();
                 Auth.auth_fio = reader[1].ToString();
-                //Auth.auth_role = Convert.ToInt32(reader[4].ToString());
             }
             reader.Close(); // закрываем reader
             // закрываем соединение с БД
@@ -88,15 +87,16 @@ namespace workCourse
         {
             pass += textBox2.Text;
             textBox2.Text = System.Text.RegularExpressions.Regex.Replace($"{textBox2.Text}", @"\w", "*");
+            textBox2.SelectionStart = textBox2.Text.Length;
+            textBox2.BackColor = Color.White;
+            label2.BackColor = Color.White;
             pass = pass.Replace($"*", "");
         }
         
         private void textBox2_TextChanged(object sender, EventArgs e)
         {
             textChang();
-            textBox2.SelectionStart = textBox2.Text.Length;
-            textBox2.BackColor = Color.White;
-            label2.BackColor = Color.White;
+            
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)
@@ -109,7 +109,7 @@ namespace workCourse
 
         private void разработчикToolStripMenuItem_Click(object sender, EventArgs e) => MessageBox.Show("telegram: @grumm4ik\nVK: vk.com/grumm4ik", "О создателе");
 
-        async void Login()
+        void Login()
         {
             if (textBox1.Text.Length == 0)
             {
@@ -147,8 +147,6 @@ namespace workCourse
             
             if (table.Rows.Count > 0)
             {
-                
-
                 //Присваеваем глобальный признак авторизации
                 Auth.auth = true;
                 //Достаем данные пользователя в случае успеха
@@ -209,12 +207,16 @@ namespace workCourse
         {
             if (e.KeyData == Keys.Enter)
                 Login();
+            if (e.KeyData == Keys.Back)
+                pass.Replace(Convert.ToString(pass[pass.Length - 1]), "");
         }
 
         private void textBox2_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyData == Keys.Enter)
                 Login();
+            if (e.KeyData == Keys.Back)
+                pass.Replace(Convert.ToString(pass[pass.Length - 1]), "");
         }
     }
 }

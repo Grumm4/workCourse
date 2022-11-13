@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using ClassOrder;
+
 using static System.ComponentModel.Design.ObjectSelectorEditor;
 using System.Collections;
 using Microsoft.VisualBasic;
@@ -27,7 +27,7 @@ namespace workCourse
             mn.Show();
         }
 
-        private void numericUpDown1_ValueChanged(object sender, EventArgs e) => PriceEntry();
+        private void numericUpDown1_ValueChanged(object sender, EventArgs e) => Methods.PriceEntry(numericUpDown1, comboBox1, textBox1);
 
         private void OrderForm_Load(object sender, EventArgs e)
         {
@@ -40,25 +40,17 @@ namespace workCourse
             MySqlDataReader reader = command.ExecuteReader();
             while (reader.Read()) { comboBox1.Items.Add(reader.GetString(0)); }
             reader.Close();
-
-            //заполнение combobox2 названиями поставщиков
-            //query = "SELECT `name_provider` FROM `t_provider`";
-            //command = new MySqlCommand(query, conn);
-            //reader = command.ExecuteReader();
-            //while (reader.Read()) { comboBox2.Items.Add(reader.GetString(0)); }
-            //reader.Close();
-
             conn.Close();
         }
 
-        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e) => PriceEntry();
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e) => Methods.PriceEntry(numericUpDown1, comboBox1, textBox1);
 
         private void button2_Click(object sender, EventArgs e)
         {
             MySqlConnection conn = new MySqlConnection(Form1.connStr);
             conn.Open();
 
-            string query = $"UPDATE Main SET count = count + {numericUpDown1.Value}, WHERE title = '{comboBox1.Text}'";
+            string query = $"UPDATE Main SET count = count + {numericUpDown1.Value} WHERE title = '{comboBox1.Text}'";
             MySqlCommand command = new MySqlCommand(query, conn);
             command.ExecuteNonQuery();
             if(MessageBox.Show("Заказ совершён, вернуться на главную страницу?", "", MessageBoxButtons.YesNo) == DialogResult.Yes)
@@ -70,43 +62,9 @@ namespace workCourse
             conn.Close();
         }
 
-        void PriceEntry()
-        {
-            MySqlConnection conn = new MySqlConnection(Form1.connStr);
-            conn.Open();
-
-            if (numericUpDown1.Value > -1)
-            {
-                string query = $"SELECT `price` FROM `Main` WHERE `title` = '{comboBox1.SelectedItem}'";
-                MySqlCommand command = new MySqlCommand(query, conn);
-                MySqlDataReader reader = command.ExecuteReader();
-                string price = "";
-                double res = 0;
-                while (reader.Read()) { price = (reader.GetString(0)); res = Convert.ToDouble(price) * Convert.ToDouble(numericUpDown1.Value); textBox1.Text = Convert.ToString(res); }
-            }
-            conn.Close();
-        }
-
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
 
         }
-
-        
-
-        //private void button2_Click_1(object sender, EventArgs e)
-        //{
-        //    Random rand = new Random();
-        //    byte a = Convert.ToByte(rand.Next(1, 2));
-        //    MessageBox.Show($"Заказ совершён, поступление через {a} час(ов)");
-        //    MySqlConnection conn = new MySqlConnection(connStr);
-        //    conn.Open();
-
-        //    string query = $"UPDATE Main SET count = count + {numericUpDown1.Value} WHERE title = '{comboBox1.Text}'";
-        //    MySqlCommand command = new MySqlCommand(query, conn);
-        //    command.ExecuteNonQuery();
-
-        //    conn.Close();
-        //}
     }
 }
