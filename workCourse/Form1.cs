@@ -208,7 +208,7 @@ namespace workCourse
             if (e.KeyData == Keys.Enter)
                 Login();
             if (e.KeyData == Keys.Back)
-                pass.Replace(Convert.ToString(pass[pass.Length - 1]), "");
+                textBox1.Text.Replace(Convert.ToString(textBox1.Text[textBox1.Text.Length - 1]), "");
         }
 
         private void textBox2_KeyDown(object sender, KeyEventArgs e)

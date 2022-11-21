@@ -13,12 +13,18 @@ using static System.ComponentModel.Design.ObjectSelectorEditor;
 using System.Collections;
 using Microsoft.VisualBasic;
 using Org.BouncyCastle.Utilities.Collections;
+using System.Threading;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using ComboBox = System.Windows.Forms.ComboBox;
 
 namespace workCourse
 {
     public partial class OrderForm : Form
     {
-        public OrderForm() => InitializeComponent();
+        public OrderForm() 
+        {
+            InitializeComponent(); 
+        }
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -44,27 +50,35 @@ namespace workCourse
         }
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e) => Methods.PriceEntry(numericUpDown1, comboBox1, textBox1);
-
-        private void button2_Click(object sender, EventArgs e)
+        Methods m = new Methods();
+        private async void button2_Click(object sender, EventArgs e)
         {
-            MySqlConnection conn = new MySqlConnection(Form1.connStr);
-            conn.Open();
+            
+            ComboBox combo = this.comboBox1;
+            NumericUpDown num = this.numericUpDown1;
+            //new Thread(() => Delay(numericUpDown1, comboBox1)).Start();
 
-            string query = $"UPDATE Main SET count = count + {numericUpDown1.Value} WHERE title = '{comboBox1.Text}'";
-            MySqlCommand command = new MySqlCommand(query, conn);
-            command.ExecuteNonQuery();
-            if(MessageBox.Show("Заказ совершён, вернуться на главную страницу?", "", MessageBoxButtons.YesNo) == DialogResult.Yes)
-            {
-                Main mn = new Main();
-                this.Hide();
-                mn.Show();
-            }
-            conn.Close();
+            //if (InvokeRequired)
+            //{
+            //    this.Invoke(new Action(async () => await Task.Run(() => Delay(numericUpDown1, comboBox1))));
+            //}
+
+            await m.GoDelay(num, combo);
+            //m.Delay(numericUpDown1, comboBox1);
+            
+
         }
+        
+        
+        
 
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
 
         }
+    }
+    public class Cl
+    {
+        
     }
 }
