@@ -18,11 +18,13 @@ namespace workCourse
         public decimal limit = 10;
         public int numFirPage = 1;
         public decimal numLastPage = 0;
+        public OrderForm of = new OrderForm();
+        MySqlConnection conn = new MySqlConnection(Form1.connStr);
         public Main()
         {
             InitializeComponent();
         }
-        MySqlConnection conn = new MySqlConnection(Form1.connStr);
+        
         //delegate void Function();
         void Page(int offset, decimal limit)
         {
@@ -85,9 +87,10 @@ namespace workCourse
             MessageBox.Show($"Общая цена всех товаров: {Math.Round(Convert.ToDecimal(command.ExecuteScalar()), 2)}");
             conn.Close();
         }
+        
         private void button4_Click(object sender, EventArgs e)
         {
-            OrderForm of = new OrderForm();
+            
             this.Hide();
             of.Show();
         }
@@ -130,6 +133,11 @@ namespace workCourse
             }
             else
                 Page(offset, limit);
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

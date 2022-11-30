@@ -14,7 +14,7 @@ namespace workCourse
 {
     internal class Methods
     {
-        internal ComboBox cb1;
+        //internal ComboBox cb1;
         public Methods()
         {
             
@@ -30,8 +30,8 @@ namespace workCourse
                 string query = $"SELECT `price` FROM `Main` WHERE `title` = '{com.SelectedItem}'";
                 MySqlCommand command = new MySqlCommand(query, conn);
                 MySqlDataReader reader = command.ExecuteReader();
-                string price = "";
-                double res = 0;
+                string price;
+                double res;
                 while (reader.Read()) { price = (reader.GetString(0)); res = Convert.ToDouble(price) * Convert.ToDouble(num.Value); tex.Text = Convert.ToString(res); }
             }
             conn.Close();
@@ -40,51 +40,48 @@ namespace workCourse
         {
             Thread.Sleep(10000);
         }
-        internal async Task GoDelay(NumericUpDown n, ComboBox c)
+        internal async Task GoDelay(NumericUpDown n, ComboBox c, Form form)
         {
             Random rnd = new Random();
-            int time = rnd.Next(1, 2);
+            int time = rnd.Next(1, 3);
             bool b = true;
             int a = DateTime.Now.Minute;
             MessageBox.Show("Заказ сделан, ожидайте поступления");
-            //ComboBox.Invoke((MethodInvoker)delegate { c.Text; });
             
             while (b)
             {
                 await Task.Run(() => Delay());
-                if (a + time == DateTime.Now.Minute)
+                if (a + time == a + time)
                 {
-
-
-                    //MessageBox.Show($"num: {n.Value}, com: {cc.Text}");
-                    b = false;
                     MySqlConnection conn = new MySqlConnection(Form1.connStr);
-                    conn.Open();
-                    string query = $"UPDATE Main SET count = count + {n.Value} WHERE title = '{c.Text}'";
-                    MySqlCommand command = new MySqlCommand(query, conn);
-                    command.ExecuteNonQuery();
-                    if (MessageBox.Show("Заказ поступил, вернуться на главную страницу?", "", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                    try
                     {
-                        Main mn = new Main();
-                        OrderForm of = new OrderForm();
-                        mn.Show();
-                        of.Hide();
+                        b = false;
+                        conn.Open();
+                        string query = $"UPDATE Main SET count = count + {n.Value} WHERE title = '{c.Text}'";
+                        MySqlCommand command = new MySqlCommand(query, conn);
+                        command.ExecuteNonQuery();
+                        if (MessageBox.Show("Заказ поступил, вернуться на главную страницу?", "", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                        {
+                            Main mn = new Main();
+                            form.Close();
+                            mn.Show();
+                            b = false;
+                        }
+                        
                     }
-                    conn.Close();
-
-                    //catch (InvalidOperationException ex)
-                    //{
-                    //    MessageBox.Show(ex.);
-                    //}
+                    catch (InvalidOperationException ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                    }
+                    finally
+                    {
+                        conn.Close();
+                    }
 
                 }
                 
             }
         }
-
-        //DateTime dt = new DateTime();
-
-        //
-
     }
 }

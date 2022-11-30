@@ -21,6 +21,7 @@ namespace workCourse
 {
     public partial class OrderForm : Form
     {
+        Methods m = new Methods();
         public OrderForm() 
         {
             InitializeComponent(); 
@@ -29,7 +30,7 @@ namespace workCourse
         private void button1_Click(object sender, EventArgs e)
         {
             Main mn = new Main();
-            this.Hide();
+            this.Close();
             mn.Show();
         }
 
@@ -50,35 +51,27 @@ namespace workCourse
         }
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e) => Methods.PriceEntry(numericUpDown1, comboBox1, textBox1);
-        Methods m = new Methods();
+        
         private async void button2_Click(object sender, EventArgs e)
         {
-            
             ComboBox combo = this.comboBox1;
             NumericUpDown num = this.numericUpDown1;
-            //new Thread(() => Delay(numericUpDown1, comboBox1)).Start();
 
-            //if (InvokeRequired)
-            //{
-            //    this.Invoke(new Action(async () => await Task.Run(() => Delay(numericUpDown1, comboBox1))));
-            //}
-
-            await m.GoDelay(num, combo);
-            //m.Delay(numericUpDown1, comboBox1);
-            
-
+            //Вызов метода обработки заказа
+            try
+            {
+                await m.GoDelay(num, combo, this);
+            }
+            catch (MySqlException)
+            {
+                MessageBox.Show("Для этого товара места на складе больше нет");
+            }
         }
         
-        
-        
-
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
 
         }
     }
-    public class Cl
-    {
-        
-    }
+    
 }

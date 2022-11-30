@@ -49,9 +49,9 @@ namespace workCourse
             // button1
             // 
             this.button1.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.button1.Location = new System.Drawing.Point(7, 404);
+            this.button1.Location = new System.Drawing.Point(7, 346);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(149, 43);
+            this.button1.Size = new System.Drawing.Size(147, 43);
             this.button1.TabIndex = 0;
             this.button1.Text = "Exit";
             this.button1.UseVisualStyleBackColor = true;
@@ -77,7 +77,7 @@ namespace workCourse
             this.dataGridView1.RowHeadersVisible = false;
             this.dataGridView1.RowTemplate.Height = 25;
             this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView1.Size = new System.Drawing.Size(779, 389);
+            this.dataGridView1.Size = new System.Drawing.Size(779, 328);
             this.dataGridView1.TabIndex = 1;
             this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
             // 
@@ -123,7 +123,7 @@ namespace workCourse
             // button2
             // 
             this.button2.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.button2.Location = new System.Drawing.Point(162, 404);
+            this.button2.Location = new System.Drawing.Point(160, 346);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(149, 43);
             this.button2.TabIndex = 2;
@@ -134,9 +134,9 @@ namespace workCourse
             // button3
             // 
             this.button3.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.button3.Location = new System.Drawing.Point(632, 404);
+            this.button3.Location = new System.Drawing.Point(630, 347);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(154, 43);
+            this.button3.Size = new System.Drawing.Size(156, 42);
             this.button3.TabIndex = 3;
             this.button3.Text = "Общая цена товаров";
             this.button3.UseVisualStyleBackColor = true;
@@ -145,7 +145,7 @@ namespace workCourse
             // button4
             // 
             this.button4.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.button4.Location = new System.Drawing.Point(472, 404);
+            this.button4.Location = new System.Drawing.Point(470, 346);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(154, 43);
             this.button4.TabIndex = 4;
@@ -156,7 +156,7 @@ namespace workCourse
             // button5
             // 
             this.button5.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.button5.Location = new System.Drawing.Point(317, 404);
+            this.button5.Location = new System.Drawing.Point(315, 346);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(149, 43);
             this.button5.TabIndex = 5;
@@ -167,7 +167,7 @@ namespace workCourse
             // button6
             // 
             this.button6.Font = new System.Drawing.Font("Segoe UI", 21.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.button6.Location = new System.Drawing.Point(12, 330);
+            this.button6.Location = new System.Drawing.Point(12, 272);
             this.button6.Name = "button6";
             this.button6.Size = new System.Drawing.Size(106, 54);
             this.button6.TabIndex = 6;
@@ -178,7 +178,7 @@ namespace workCourse
             // button7
             // 
             this.button7.Font = new System.Drawing.Font("Segoe UI", 21.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.button7.Location = new System.Drawing.Point(679, 330);
+            this.button7.Location = new System.Drawing.Point(674, 272);
             this.button7.Name = "button7";
             this.button7.Size = new System.Drawing.Size(106, 54);
             this.button7.TabIndex = 7;
@@ -190,17 +190,18 @@ namespace workCourse
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.label1.Location = new System.Drawing.Point(322, 352);
+            this.label1.Location = new System.Drawing.Point(325, 294);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(0, 32);
             this.label1.TabIndex = 8;
+            this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ButtonFace;
-            this.ClientSize = new System.Drawing.Size(797, 458);
+            this.ClientSize = new System.Drawing.Size(797, 403);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.button7);
             this.Controls.Add(this.button6);

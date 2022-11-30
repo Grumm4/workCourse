@@ -24,19 +24,26 @@ namespace workCourse
 
         private void button2_Click(object sender, EventArgs e)
         {
-            MySqlConnection conn = new MySqlConnection(Form1.connStr);
-            conn.Open();
-
-            string query = $"UPDATE `Main` SET `count` = `count` - {numericUpDown1.Value}, WHERE `title` = '{comboBox1.Text}'";
-            MySqlCommand command = new MySqlCommand(query, conn);
-            command.ExecuteNonQuery();
-            if (MessageBox.Show("Товар продан, вернуться на главную страницу?", "", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            try
             {
-                Main mn = new Main();
-                this.Hide();
-                mn.Show();
+                MySqlConnection conn = new MySqlConnection(Form1.connStr);
+                conn.Open();
+
+                string query = $"UPDATE Main SET count = count - {numericUpDown1.Value} WHERE title = '{comboBox1.Text}'";
+                MySqlCommand command = new MySqlCommand(query, conn);
+                command.ExecuteNonQuery();
+                if (MessageBox.Show("Товар продан, вернуться на главную страницу?", "", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                {
+                    Main mn = new Main();
+                    this.Hide();
+                    mn.Show();
+                }
+                conn.Close();
             }
-            conn.Close();
+            catch(MySqlException)
+            {
+                MessageBox.Show("Невозможно продать больше товара, чем имеется");
+            }
         }
 
         private void SellingForm_Load(object sender, EventArgs e)
