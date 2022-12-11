@@ -60,11 +60,11 @@ namespace workCourse
             //Вызов метода обработки заказа
             try
             {
-                await m.GoDelay(num, combo, this);
+                await m.GoOrder(num, combo, this);
             }
-            catch (MySqlException)
+            catch(Exception ex)
             {
-                MessageBox.Show("Для этого товара места на складе больше нет");
+                MessageBox.Show(ex.Message);
             }
         }
         

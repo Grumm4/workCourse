@@ -13,6 +13,7 @@ namespace workCourse
 {
     public partial class SellingForm : Form
     {
+        Methods m = new Methods();
         public SellingForm() => InitializeComponent();
 
         private void button1_Click(object sender, EventArgs e)
@@ -22,27 +23,19 @@ namespace workCourse
             mn.Show();
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private async void button2_Click(object sender, EventArgs e)
         {
+            ComboBox combo = this.comboBox1;
+            NumericUpDown num = this.numericUpDown1;
+
+            //Вызов метода обработки заказа
             try
             {
-                MySqlConnection conn = new MySqlConnection(Form1.connStr);
-                conn.Open();
-
-                string query = $"UPDATE Main SET count = count - {numericUpDown1.Value} WHERE title = '{comboBox1.Text}'";
-                MySqlCommand command = new MySqlCommand(query, conn);
-                command.ExecuteNonQuery();
-                if (MessageBox.Show("Товар продан, вернуться на главную страницу?", "", MessageBoxButtons.YesNo) == DialogResult.Yes)
-                {
-                    Main mn = new Main();
-                    this.Hide();
-                    mn.Show();
-                }
-                conn.Close();
+                await m.GoSelling(num, combo, this);
             }
-            catch(MySqlException)
+            catch (Exception ex)
             {
-                MessageBox.Show("Невозможно продать больше товара, чем имеется");
+                MessageBox.Show(ex.Message);
             }
         }
 
