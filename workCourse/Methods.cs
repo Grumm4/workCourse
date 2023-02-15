@@ -12,14 +12,13 @@ using TextBox = System.Windows.Forms.TextBox;
 using Button = System.Windows.Forms.Button;
 namespace workCourse
 {
-    internal class Methods
+    public class Methods
     {
-        //internal ComboBox cb1;
         public Methods()
         {
             
         }
-        //для orderform, для заполнения текстбокса с ценой
+        //для orderForm и sellinForm, для заполнения текстбокса с ценой
         internal static void PriceEntry(NumericUpDown num, ComboBox com, TextBox tex)
         {
             MySqlConnection conn = new MySqlConnection(Form1.connStr);
@@ -36,13 +35,21 @@ namespace workCourse
             }
             conn.Close();
         }
+        //
+
+        //метод вызова задержки в 10 секунд
         internal void OrderDelay()
         {
             Thread.Sleep(10000);
         }
+        //
+
+        //асинхронный метод заказа
         internal async Task GoOrder(NumericUpDown n, ComboBox c, Form form)
         {
+            form.Size = new System.Drawing.Size(422, 222);
             Random rnd = new Random();
+
             int time = rnd.Next(1, 3);
             bool b = true;
             int a = DateTime.Now.Minute;
@@ -51,7 +58,7 @@ namespace workCourse
             while (b)
             {
                 await Task.Run(() => OrderDelay());
-                if (a + time == a + time)
+                if (a + time == DateTime.Now.Minute)
                 {
                     MySqlConnection conn = new MySqlConnection(Form1.connStr);
                     try
@@ -65,6 +72,7 @@ namespace workCourse
                         {
                             Main mn = new Main();
                             form.Close();
+                            mn.Hide();
                             mn.Show();
                             b = false;
                         }
@@ -83,8 +91,12 @@ namespace workCourse
                 
             }
         }
+        //
+
+        //асинхронный метод продажи
         internal async Task GoSelling(NumericUpDown n, ComboBox c, Form form)
         {
+            form.Size = new System.Drawing.Size(422,222);
             Random rnd = new Random();
             int time = rnd.Next(1, 3);
             bool b = true;
@@ -94,7 +106,7 @@ namespace workCourse
             while (b)
             {
                 await Task.Run(() => OrderDelay());
-                if (a + time == a + time)
+                if (a + time == DateTime.Now.Minute)
                 {
                     MySqlConnection conn = new MySqlConnection(Form1.connStr);
                     try
@@ -126,5 +138,6 @@ namespace workCourse
 
             }
         }
+        //
     }
 }

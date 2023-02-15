@@ -58,14 +58,29 @@ namespace workCourse
             NumericUpDown num = this.numericUpDown1;
 
             //Вызов метода обработки заказа
-            try
+            if (Convert.ToString(comboBox1.SelectedItem) != "" && numericUpDown1.Value != 0)
             {
-                await m.GoOrder(num, combo, this);
+                try
+                {
+                    await m.GoOrder(num, combo, this);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
             }
-            catch(Exception ex)
+            else if(Convert.ToString(comboBox1.SelectedItem) == "")
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show("Вы должны выбрать товар, который хотите заказать!");
+                numericUpDown1.Value = 0;
             }
+            else if (numericUpDown1.Value == 0)
+            {
+                MessageBox.Show("Вы должны указать количество товара, который хотите заказать!");
+                comboBox1.SelectedValue = "";
+            }
+
+
         }
         
         private void textBox1_TextChanged(object sender, EventArgs e)

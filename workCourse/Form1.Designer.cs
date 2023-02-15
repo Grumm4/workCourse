@@ -154,14 +154,13 @@ namespace workCourse
             // toolStripMenuItem3
             // 
             this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-            this.toolStripMenuItem3.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(149, 22);
             this.toolStripMenuItem3.Text = "О программе";
-            this.toolStripMenuItem3.Click += new System.EventHandler(this.toolStripMenuItem3_Click);
             // 
             // разработчикToolStripMenuItem
             // 
             this.разработчикToolStripMenuItem.Name = "разработчикToolStripMenuItem";
-            this.разработчикToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.разработчикToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
             this.разработчикToolStripMenuItem.Text = "Разработчик";
             this.разработчикToolStripMenuItem.Click += new System.EventHandler(this.разработчикToolStripMenuItem_Click);
             // 

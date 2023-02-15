@@ -26,42 +26,26 @@ namespace workCourse
         //Вычисление хэша строки и возрат его из метода
         static string sha256(string randomString)
         {
-            //Тут происходит криптографическая магия. Смысл данного метода заключается в том, что строка залетает в метод
-            var crypt = new System.Security.Cryptography.SHA256Managed();
-            var hash = new System.Text.StringBuilder();
-            byte[] crypto = crypt.ComputeHash(Encoding.UTF8.GetBytes(randomString));
-            foreach (byte theByte in crypto)
+            StringBuilder hash = new StringBuilder();
+            try
             {
-                hash.Append(theByte.ToString("x2"));
+                //Шифрование пароля пользователя
+                var crypt = new System.Security.Cryptography.SHA256Managed();
+                hash = new System.Text.StringBuilder();
+                byte[] crypto = crypt.ComputeHash(Encoding.UTF8.GetBytes(randomString));
+                foreach (byte theByte in crypto)
+                {
+                    hash.Append(theByte.ToString("x2"));
+                }
+                return hash.ToString();
             }
-            return hash.ToString();
+            catch (Exception)
+            {
+                return hash.ToString();
+            }
+           
         }
 
-        //Метод запроса данных пользователя по логину для запоминания их в полях класса
-        public void GetUserInfo(string login_user)
-        {
-            //Объявлем переменную для запроса в БД
-            string selected_id_stud = textBox1.Text;
-            // устанавливаем соединение с БД
-            conn.Open();
-            // запрос
-            string sql = $"SELECT * FROM t_user WHERE loginUser='{login_user}'";
-            // объект для выполнения SQL-запроса
-            MySqlCommand command = new MySqlCommand(sql, conn);
-            // объект для чтения ответа сервера
-            MySqlDataReader reader = command.ExecuteReader();
-            // читаем результат
-            while (reader.Read())
-            {
-                // элементы массива [] - это значения столбцов из запроса SELECT
-                Auth.auth_id = reader[0].ToString();
-                Auth.auth_fio = reader[1].ToString();
-            }
-            reader.Close(); // закрываем reader
-            // закрываем соединение с БД
-            conn.Close();
-        }
-        
         public Form1()
         {
             InitializeComponent();
@@ -109,7 +93,7 @@ namespace workCourse
 
         private void разработчикToolStripMenuItem_Click(object sender, EventArgs e) => MessageBox.Show("telegram: @grumm4ik\nVK: vk.com/grumm4ik", "О создателе");
 
-        void Login()
+        public int Login()
         {
             if (textBox1.Text.Length == 0)
             {
@@ -143,16 +127,11 @@ namespace workCourse
             adapter.Fill(table);
             //Закрываем соединение
             conn.Close();
-            //Если вернулась больше 0 строк, значит такой пользователь существует
+            //Если вернулось больше 0 строк, значит такой пользователь существует
             
             if (table.Rows.Count > 0)
             {
-                //Присваеваем глобальный признак авторизации
-                Auth.auth = true;
-                //Достаем данные пользователя в случае успеха
-                GetUserInfo(textBox1.Text);
-                
-                //Закрываем форму
+                //Закрытие формы
                 this.Hide();
                 main.Show();
                 new ToastContentBuilder()
@@ -160,17 +139,15 @@ namespace workCourse
                     .AddArgument("conversationId", 9813)
                     .AddText("Выполнен вход")
                     .AddText($"Пользователь: {textBox1.Text}")
-                    .AddAppLogoOverride(new Uri("C:\\Users\\Kirill\\Desktop\\1\\1\\materials\\bg.jpg"), ToastGenericAppLogoCrop.Circle)
                     .Show(); // Not seeing the Show() me
                 table = null;
                 adapter = null;
                 pass = null;
                 command = null;
+                return 1;
             }
             else
             {
-                
-
                 if (textBox1.Text.Length == 0 || textBox2.Text.Length == 0) 
                 { 
                     MessageBox.Show("Поля не должны оставаться пустыми!", "Ошибка входа:"); 
@@ -186,6 +163,7 @@ namespace workCourse
                 adapter = null;
                 pass = null;
                 command = null;
+                return 0;
             }
         }
         internal void DeleteText()
@@ -207,16 +185,24 @@ namespace workCourse
         {
             if (e.KeyData == Keys.Enter)
                 Login();
-            if (e.KeyData == Keys.Back)
-                textBox1.Text.Replace(Convert.ToString(textBox1.Text[textBox1.Text.Length - 1]), "");
+            if (textBox2.Text.Length != 0)
+            {
+                if (e.KeyData == Keys.Back)
+                    textBox1.Text.Replace(Convert.ToString(textBox1.Text[textBox1.Text.Length - 1]), "");
+            }
+            
         }
 
         private void textBox2_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyData == Keys.Enter)
                 Login();
-            if (e.KeyData == Keys.Back)
-                pass.Replace(Convert.ToString(pass[pass.Length - 1]), "");
+            if(textBox2.Text.Length != 0)
+            {
+                if (e.KeyData == Keys.Back)
+                    pass.Replace(Convert.ToString(pass[pass.Length - 1]), "");
+            }
+            
         }
     }
 }
