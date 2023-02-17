@@ -15,6 +15,7 @@ namespace workCourse
 {
     public partial class Form1 : Form
     {
+        
         public string pass = "";
         public static string connStr = "server=chuc.caseum.ru;port=33333;user=st_2_20_8;database=is_2_20_st8_KURS;password=82411770;";
 
@@ -134,6 +135,7 @@ namespace workCourse
                 //Закрытие формы
                 this.Hide();
                 main.Show();
+                
                 new ToastContentBuilder()
                     .AddArgument("action", "viewConversation")
                     .AddArgument("conversationId", 9813)

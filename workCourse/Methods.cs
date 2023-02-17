@@ -14,6 +14,7 @@ namespace workCourse
 {
     public class Methods
     {
+        
         public Methods()
         {
             
@@ -45,97 +46,51 @@ namespace workCourse
         //
 
         //асинхронный метод заказа
-        internal async Task GoOrder(NumericUpDown n, ComboBox c, Form form)
+        internal async Task GoOrder(int n, string c, Form form)
         {
-            form.Size = new System.Drawing.Size(422, 222);
-            Random rnd = new Random();
-
-            int time = rnd.Next(1, 3);
-            bool b = true;
-            int a = DateTime.Now.Minute;
-            MessageBox.Show("Заказ сделан, ожидайте поступления");
-            
-            while (b)
+            MySqlConnection conn = new MySqlConnection(Form1.connStr);
+            try
             {
-                await Task.Run(() => OrderDelay());
-                if (a + time == DateTime.Now.Minute)
-                {
-                    MySqlConnection conn = new MySqlConnection(Form1.connStr);
-                    try
-                    {
-                        b = false;
-                        conn.Open();
-                        string query = $"UPDATE Main SET count = count + {n.Value} WHERE title = '{c.Text}'";
-                        MySqlCommand command = new MySqlCommand(query, conn);
-                        command.ExecuteNonQuery();
-                        if (MessageBox.Show("Заказ поступил, вернуться на главную страницу?", "", MessageBoxButtons.YesNo) == DialogResult.Yes)
-                        {
-                            Main mn = new Main();
-                            form.Close();
-                            mn.Hide();
-                            mn.Show();
-                            b = false;
-                        }
-                        
-                    }
-                    catch (InvalidOperationException ex)
-                    {
-                        MessageBox.Show(ex.Message);
-                    }
-                    finally
-                    {
-                        conn.Close();
-                    }
-
-                }
-                
+                conn.Open();
+                string query = $"UPDATE Main SET count = count + {n} WHERE title = '{c}'";
+                MySqlCommand command = new MySqlCommand(query, conn);
+                command.ExecuteNonQuery();
+            }
+            catch (InvalidOperationException ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                conn.Close();
             }
         }
         //
 
         //асинхронный метод продажи
-        internal async Task GoSelling(NumericUpDown n, ComboBox c, Form form)
+        internal async Task GoSelling(int n, string c, Form form, TextBox text, string dt)
         {
-            form.Size = new System.Drawing.Size(422,222);
-            Random rnd = new Random();
-            int time = rnd.Next(1, 3);
-            bool b = true;
-            int a = DateTime.Now.Minute;
-            MessageBox.Show("Операция выполнена, ожидайте отправки");
-
-            while (b)
+            MySqlConnection conn = new MySqlConnection(Form1.connStr);
+            try
             {
-                await Task.Run(() => OrderDelay());
-                if (a + time == DateTime.Now.Minute)
-                {
-                    MySqlConnection conn = new MySqlConnection(Form1.connStr);
-                    try
-                    {
-                        b = false;
-                        conn.Open();
-                        string query = $"UPDATE Main SET count = count - {n.Value} WHERE title = '{c.Text}'";
-                        MySqlCommand command = new MySqlCommand(query, conn);
-                        command.ExecuteNonQuery();
-                        if (MessageBox.Show("Товар продан, вернуться на главную страницу?", "", MessageBoxButtons.YesNo) == DialogResult.Yes)
-                        {
-                            Main mn = new Main();
-                            form.Close();
-                            mn.Show();
-                            b = false;
-                        }
-
-                    }
-                    catch (InvalidOperationException ex)
-                    {
-                        MessageBox.Show(ex.Message);
-                    }
-                    finally
-                    {
-                        conn.Close();
-                    }
-
-                }
-
+                conn.Open();
+                string query = $"UPDATE Main SET count = count - {n} WHERE title = '{c}'";
+                string query2 = $"INSERT INTO Orders (orderNumber) VALUES ('{text.Text}')";
+                string query3 = $"INSERT INTO infoOrder (userId, item, count, data) VALUES ('{text.Text}', '{c}', '{Convert.ToInt32(n)}', '{dt}')";
+                MySqlCommand command = new MySqlCommand(query, conn);
+                MySqlCommand command2 = new MySqlCommand(query2, conn);
+                MySqlCommand command3 = new MySqlCommand(query3, conn);
+                command.ExecuteNonQuery();
+                command2.ExecuteNonQuery();
+                command3.ExecuteNonQuery();
+            }
+            catch (InvalidOperationException ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                conn.Close();
             }
         }
         //

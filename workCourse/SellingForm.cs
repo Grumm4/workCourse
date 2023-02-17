@@ -8,11 +8,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Text.RegularExpressions;
 
 namespace workCourse
 {
     public partial class SellingForm : Form
     {
+        Dictionary<string, int> orderBasket = new Dictionary<string, int>();
         Methods m = new Methods();
         public SellingForm() => InitializeComponent();
 
@@ -25,31 +27,34 @@ namespace workCourse
 
         private async void button2_Click(object sender, EventArgs e)
         {
-            ComboBox combo = this.comboBox1;
-            NumericUpDown num = this.numericUpDown1;
+            var date = DateTime.Now;
+            string formatedDate = date.ToString("yyyy:MM:dd");
+            var dateOnly = new DateOnly(date.Year, date.Month, date.Day);
+            
+            Regex reg = new Regex("^((\\+7)+([0-9]){10})$");
+            MatchCollection mc = reg.Matches(textBox2.Text);
+            if (mc.Count > 0) 
+            {
+                foreach (var tov in orderBasket)
+                {
+                    try
+                    {
+                        await m.GoSelling(Convert.ToInt32(tov.Value), tov.Key, this, textBox2, formatedDate);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                    }
+                }
 
-            //Вызов метода обработки заказа
-            if (Convert.ToString(comboBox1.SelectedItem) != "" && numericUpDown1.Value != 0)
-            {
-                try
+                if (MessageBox.Show("Товар продан, вернуться на главную страницу?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
                 {
-                    await m.GoSelling(num, combo, this);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message);
+                    Main mn = new Main();
+                    this.Close();
+                    mn.Show();
                 }
             }
-            else if (Convert.ToString(comboBox1.SelectedItem) == "")
-            {
-                MessageBox.Show("Вы должны выбрать товар, который хотите продать!");
-                numericUpDown1.Value = 0;
-            }
-            else if (numericUpDown1.Value == 0)
-            {
-                MessageBox.Show("Вы должны указать количество товара, который хотите продать!");
-                comboBox1.SelectedValue = "";
-            }
+            
         }
 
         private void SellingForm_Load(object sender, EventArgs e)
@@ -70,6 +75,21 @@ namespace workCourse
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             Methods.PriceEntry(numericUpDown1, comboBox1, textBox1);
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            orderBasket.Add(comboBox1.Text, Convert.ToInt32(numericUpDown1.Value));
+            listBox1.Items.Add($"Товар: {comboBox1.Text} | Количество: {Convert.ToInt32(numericUpDown1.Value)}");
+
+            textBox1.Text = "";
+            comboBox1.SelectedItem = null;
+            numericUpDown1.Value = 0;
+        }
+
+        private void label4_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

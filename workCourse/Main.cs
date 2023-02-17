@@ -20,6 +20,7 @@ namespace workCourse
         public decimal numLastPage = 0;
         public OrderForm of = new OrderForm();
         MySqlConnection conn = new MySqlConnection(Form1.connStr);
+        
         public Main()
         {
             InitializeComponent();
@@ -73,33 +74,32 @@ namespace workCourse
         private void button2_Click(object sender, EventArgs e)
         {
             Form1 form = new Form1();
-            this.Hide();
             form.Show();
+            this.Hide();
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
-            conn.Open();
-            //Добавление всех price в коллекцию
-            string query = "SELECT SUM(`price`*`count`) FROM `Main`";
-            MySqlCommand command = new MySqlCommand(query, conn);
-            //MySqlDataReader reader = command.ExecuteReader();
-            MessageBox.Show($"Общая цена всех товаров: {Math.Round(Convert.ToDecimal(command.ExecuteScalar()), 2)}");
-            conn.Close();
+            //conn.Open();
+            ////Добавление всех price в коллекцию
+            //string query = "SELECT SUM(`price`*`count`) FROM `Main`";
+            //MySqlCommand command = new MySqlCommand(query, conn);
+            ////MySqlDataReader reader = command.ExecuteReader();
+            //MessageBox.Show($"Общая цена всех товаров: {Math.Round(Convert.ToDecimal(command.ExecuteScalar()), 2)}");
+            //conn.Close();
         }
         
         private void button4_Click(object sender, EventArgs e)
         {
-            
-            this.Hide();
             of.Show();
+            this.Hide();
         }
 
         private void button5_Click(object sender, EventArgs e)
         {
             SellingForm sf = new SellingForm();
-            this.Hide();
             sf.Show();
+            this.Hide();
 
         }
 
@@ -137,6 +137,15 @@ namespace workCourse
 
         private void label1_Click(object sender, EventArgs e)
         {
+
+        }
+
+        private void button8_Click(object sender, EventArgs e)
+        {
+            
+            orderFind of = new orderFind();
+            of.Show();
+            this.Hide();
 
         }
     }

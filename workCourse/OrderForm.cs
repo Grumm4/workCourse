@@ -21,17 +21,20 @@ namespace workCourse
 {
     public partial class OrderForm : Form
     {
+        
+        Dictionary<string,int> orderBasket = new Dictionary<string,int>();
         Methods m = new Methods();
         public OrderForm() 
         {
             InitializeComponent(); 
         }
+        
 
         private void button1_Click(object sender, EventArgs e)
         {
             Main mn = new Main();
-            this.Close();
             mn.Show();
+            this.Close();
         }
 
         private void numericUpDown1_ValueChanged(object sender, EventArgs e) => Methods.PriceEntry(numericUpDown1, comboBox1, textBox1);
@@ -54,38 +57,34 @@ namespace workCourse
         
         private async void button2_Click(object sender, EventArgs e)
         {
-            ComboBox combo = this.comboBox1;
-            NumericUpDown num = this.numericUpDown1;
-
-            //Вызов метода обработки заказа
-            if (Convert.ToString(comboBox1.SelectedItem) != "" && numericUpDown1.Value != 0)
+            foreach (var tov in orderBasket)
             {
                 try
                 {
-                    await m.GoOrder(num, combo, this);
+                    await m.GoOrder(Convert.ToInt32(tov.Value), tov.Key, this);
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show(ex.Message);
                 }
             }
-            else if(Convert.ToString(comboBox1.SelectedItem) == "")
-            {
-                MessageBox.Show("Вы должны выбрать товар, который хотите заказать!");
-                numericUpDown1.Value = 0;
-            }
-            else if (numericUpDown1.Value == 0)
-            {
-                MessageBox.Show("Вы должны указать количество товара, который хотите заказать!");
-                comboBox1.SelectedValue = "";
-            }
 
-
+            if (MessageBox.Show("Заказ поступил, вернуться на главную страницу?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
+            {
+                Main mn = new Main();
+                this.Close();
+                mn.Hide();
+                mn.Show();
+            }
         }
-        
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
 
+        private void button3_Click(object sender, EventArgs e)
+        {
+            orderBasket.Add(comboBox1.Text, Convert.ToInt32(numericUpDown1.Value));
+            listBox1.Items.Add($"Товар: {comboBox1.Text} | Количество: {Convert.ToInt32(numericUpDown1.Value)}");
+
+            comboBox1.SelectedItem = null;
+            numericUpDown1.Value = 0;
         }
     }
     
