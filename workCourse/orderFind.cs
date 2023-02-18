@@ -73,7 +73,9 @@ namespace workCourse
                 result += curentPrice * Convert.ToDecimal(dataGridView1[2, i].Value);
             }
             label4.Text = String.Format("{0:c}", result).ToString();
-            
+
+            if (result < 5000m)
+                label6.Text = "Скидка недоступна";
             if (result > 5000m)
                 label6.Text = "2%";
             if (result > 10000m)
