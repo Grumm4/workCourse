@@ -14,11 +14,13 @@ namespace workCourse
 {
     public partial class orderFind : Form
     {
+        
         byte sale;
         decimal curentPrice;
         decimal result;
         Main mn = new Main();
         DateOnly don;
+        public string id;
         MySqlConnection conn = new MySqlConnection(Form1.connStr);
         List<string[]> data = new List<string[]>();
         List<string[]> data2 = new List<string[]>();
@@ -33,7 +35,7 @@ namespace workCourse
             label6.Text = "";
             dataGridView1.Rows.Clear();
             data.Clear();
-            string sql = $"SELECT userId, item, count, data FROM infoOrder WHERE userId = '{textBox1.Text}'";
+            string sql = $"SELECT phoneNumber, orderId, dateOrd, totalPrice FROM Orders WHERE phoneNumber = '{textBox1.Text}'";
             MySqlCommand cmd = new MySqlCommand(sql, conn);
             conn.Open();
             MySqlDataReader reader = cmd.ExecuteReader();
@@ -42,10 +44,10 @@ namespace workCourse
                 data.Add(new string[4]);
                 data[data.Count - 1][0] = reader[0].ToString();
                 data[data.Count - 1][1] = reader[1].ToString();
-                data[data.Count - 1][2] = reader[2].ToString();
-                don = new DateOnly(Convert.ToDateTime(reader[3]).Year, Convert.ToDateTime(reader[3]).Month, Convert.ToDateTime(reader[3]).Day);
-                data[data.Count - 1][3] = don.ToString();
-                
+                don = new DateOnly(Convert.ToDateTime(reader[2]).Year, Convert.ToDateTime(reader[2]).Month, Convert.ToDateTime(reader[2]).Day);
+                data[data.Count - 1][2] = don.ToString();
+                data[data.Count - 1][3] = reader[3].ToString();
+
             }
             reader.Close();
             conn.Close();
@@ -63,15 +65,8 @@ namespace workCourse
         void ReturnPrice()
         {
             for (int i = 0; i < dataGridView1.Rows.Count; i++)
-            {
+                result += Convert.ToDecimal(dataGridView1[3,i].Value);
 
-                string sql = $"SELECT price FROM Main WHERE title = '{dataGridView1[1, i].Value}'";
-                MySqlCommand cmd = new MySqlCommand(sql, conn);
-                conn.Open();
-                curentPrice = Convert.ToDecimal(cmd.ExecuteScalar());
-                conn.Close();
-                result += curentPrice * Convert.ToDecimal(dataGridView1[2, i].Value);
-            }
             label4.Text = String.Format("{0:c}", result).ToString();
 
             if (result < 5000m)
@@ -100,6 +95,25 @@ namespace workCourse
         {
             mn.Show();
             this.Close();
+        }
+
+        private void orderFind_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void dataGridView1_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            try
+            {
+                id = dataGridView1[1, e.RowIndex].Value.ToString();
+                orderCard od = new orderCard(id);
+                od.ShowDialog();
+            }
+            catch (System.ArgumentOutOfRangeException)
+            {
+                MessageBox.Show("Не кликать по заголовкам!");
+            }
         }
     }
 }

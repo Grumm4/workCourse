@@ -21,14 +21,14 @@ namespace workCourse
 {
     public partial class OrderForm : Form
     {
-        
-        Dictionary<string,int> orderBasket = new Dictionary<string,int>();
+
+        Dictionary<string, int> orderBasket = new Dictionary<string, int>();
         Methods m = new Methods();
-        public OrderForm() 
+        public OrderForm()
         {
-            InitializeComponent(); 
+            InitializeComponent();
         }
-        
+
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -37,7 +37,7 @@ namespace workCourse
             this.Close();
         }
 
-        private void numericUpDown1_ValueChanged(object sender, EventArgs e) => Methods.PriceEntry(numericUpDown1, comboBox1, textBox1);
+        private void numericUpDown1_ValueChanged(object sender, EventArgs e) => m.PriceEntry(numericUpDown1, textBox1, comboBox1, comboBox2);
 
         private void OrderForm_Load(object sender, EventArgs e)
         {
@@ -50,11 +50,18 @@ namespace workCourse
             MySqlDataReader reader = command.ExecuteReader();
             while (reader.Read()) { comboBox1.Items.Add(reader.GetString(0)); }
             reader.Close();
+
+            //Заполняем combobox2
+            string query2 = "SELECT `title` FROM `newItems`";
+            MySqlCommand cmd = new MySqlCommand(query2, conn);
+            MySqlDataReader reader2 = cmd.ExecuteReader();
+            while (reader2.Read()) { comboBox2.Items.Add(reader2.GetString(0)); }
+            reader2.Close();
             conn.Close();
         }
 
-        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e) => Methods.PriceEntry(numericUpDown1, comboBox1, textBox1);
-        
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e) => m.PriceEntry(numericUpDown1, textBox1, comboBox1, comboBox2);
+
         private async void button2_Click(object sender, EventArgs e)
         {
             foreach (var tov in orderBasket)
@@ -68,23 +75,47 @@ namespace workCourse
                     MessageBox.Show(ex.Message);
                 }
             }
-
+            
             if (MessageBox.Show("Заказ поступил, вернуться на главную страницу?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
             {
                 Main mn = new Main();
                 this.Close();
                 mn.Hide();
                 mn.Show();
+                
+            }
+            else
+            {
+                listBox1.Items.Clear();
+                orderBasket.Clear();
             }
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
-            orderBasket.Add(comboBox1.Text, Convert.ToInt32(numericUpDown1.Value));
-            listBox1.Items.Add($"Товар: {comboBox1.Text} | Количество: {Convert.ToInt32(numericUpDown1.Value)}");
-
+            if (comboBox1.SelectedItem == null)
+            {
+                orderBasket.Add(comboBox2.Text, Convert.ToInt32(numericUpDown1.Value));
+                listBox1.Items.Add($"Товар: {comboBox2.Text} | Количество: {Convert.ToInt32(numericUpDown1.Value)}");
+            }
+            if (comboBox2.SelectedItem == null)
+            {
+                orderBasket.Add(comboBox1.Text, Convert.ToInt32(numericUpDown1.Value));
+                listBox1.Items.Add($"Товар: {comboBox1.Text} | Количество: {Convert.ToInt32(numericUpDown1.Value)}");
+            }
+            
             comboBox1.SelectedItem = null;
+            comboBox2.SelectedItem = null;
             numericUpDown1.Value = 0;
+        }
+
+        private void comboBox1_DropDown(object sender, EventArgs e) => comboBox2.SelectedItem = null;
+
+        private void comboBox2_DropDown(object sender, EventArgs e) => comboBox1.SelectedItem = null;
+
+        private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
     

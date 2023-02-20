@@ -34,8 +34,8 @@
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.totalPrice = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label2 = new System.Windows.Forms.Label();
             this.button2 = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
@@ -85,8 +85,8 @@
             this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Column1,
             this.Column2,
-            this.Column3,
-            this.Column4});
+            this.Column4,
+            this.totalPrice});
             this.dataGridView1.Location = new System.Drawing.Point(12, 36);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowHeadersVisible = false;
@@ -95,29 +95,32 @@
             this.dataGridView1.Size = new System.Drawing.Size(455, 373);
             this.dataGridView1.TabIndex = 6;
             this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
+            this.dataGridView1.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellDoubleClick);
             // 
             // Column1
             // 
-            this.Column1.HeaderText = "number";
+            this.Column1.HeaderText = "Телефон";
             this.Column1.Name = "Column1";
+            this.Column1.ToolTipText = "Номер телефона клиента";
             // 
             // Column2
             // 
-            this.Column2.HeaderText = "item";
+            this.Column2.HeaderText = "Номер заказа";
             this.Column2.Name = "Column2";
-            this.Column2.Width = 170;
-            // 
-            // Column3
-            // 
-            this.Column3.HeaderText = "count";
-            this.Column3.Name = "Column3";
-            this.Column3.Width = 50;
+            this.Column2.ToolTipText = "Номер заказа клиента";
             // 
             // Column4
             // 
-            this.Column4.HeaderText = "date";
+            this.Column4.HeaderText = "Дата";
             this.Column4.Name = "Column4";
+            this.Column4.ToolTipText = "Дата заказа клиента";
             this.Column4.Width = 130;
+            // 
+            // totalPrice
+            // 
+            this.totalPrice.HeaderText = "Общая цена";
+            this.totalPrice.Name = "totalPrice";
+            this.totalPrice.Width = 120;
             // 
             // label2
             // 
@@ -199,6 +202,7 @@
             this.Name = "orderFind";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "orderFind";
+            this.Load += new System.EventHandler(this.orderFind_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -217,9 +221,10 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column4;
+        private System.Windows.Forms.DataGridViewTextBoxColumn totalPrice;
     }
 }

@@ -9,11 +9,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Text.RegularExpressions;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace workCourse
 {
     public partial class SellingForm : Form
     {
+        decimal totalPrice;
         Dictionary<string, int> orderBasket = new Dictionary<string, int>();
         Methods m = new Methods();
         public SellingForm() => InitializeComponent();
@@ -33,18 +35,20 @@ namespace workCourse
             
             Regex reg = new Regex("^((\\+7)+([0-9]){10})$");
             MatchCollection mc = reg.Matches(textBox2.Text);
+            //Random rnd = new Random();
+            int rand = new Random().Next(100000, 999999);
             if (mc.Count > 0) 
             {
+                MySqlConnection conn = new MySqlConnection(Form1.connStr);
+                string query2 = $"INSERT INTO Orders (phoneNumber, orderId, dateOrd, totalPrice) VALUES ('{textBox2.Text}', {rand}, '{formatedDate}', {totalPrice})";
+                MySqlCommand command2 = new MySqlCommand(query2, conn);
+                conn.Open();
+                command2.ExecuteNonQuery();
+                conn.Close();
                 foreach (var tov in orderBasket)
                 {
-                    try
-                    {
-                        await m.GoSelling(Convert.ToInt32(tov.Value), tov.Key, this, textBox2, formatedDate);
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.Message);
-                    }
+                    try { await m.GoSelling(Convert.ToInt32(tov.Value), tov.Key, textBox2, formatedDate, rand); }
+                    catch (Exception ex) { MessageBox.Show(ex.Message); }
                 }
 
                 if (MessageBox.Show("Товар продан, вернуться на главную страницу?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
@@ -70,17 +74,15 @@ namespace workCourse
             reader.Close();
         }
 
-        private void numericUpDown1_ValueChanged(object sender, EventArgs e) => Methods.PriceEntry(numericUpDown1, comboBox1, textBox1);
+        private void numericUpDown1_ValueChanged(object sender, EventArgs e) => m.PriceEntry(numericUpDown1, textBox1, comboBox1);
 
-        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            Methods.PriceEntry(numericUpDown1, comboBox1, textBox1);
-        }
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e) => m.PriceEntry(numericUpDown1, textBox1, comboBox1);
 
         private void button3_Click(object sender, EventArgs e)
         {
             orderBasket.Add(comboBox1.Text, Convert.ToInt32(numericUpDown1.Value));
             listBox1.Items.Add($"Товар: {comboBox1.Text} | Количество: {Convert.ToInt32(numericUpDown1.Value)}");
+            totalPrice += Convert.ToDecimal(textBox1.Text);
 
             textBox1.Text = "";
             comboBox1.SelectedItem = null;
