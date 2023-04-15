@@ -15,10 +15,10 @@ namespace workCourse
     public partial class Main : Form
     {
         public int offset = 0;
-        public decimal limit = 10;
+        public decimal limit = 20;
         public int numFirPage = 1;
         public decimal numLastPage = 0;
-        public OrderForm of = new OrderForm();
+        
         MySqlConnection conn = new MySqlConnection(Form1.connStr);
         
         public Main()
@@ -63,7 +63,7 @@ namespace workCourse
         }
         public void Main_Load(object sender, EventArgs e)
         {
-            Page(offset, limit);            
+            Page(offset, limit);
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -75,7 +75,7 @@ namespace workCourse
         {
             Form1 form = new Form1();
             form.Show();
-            this.Hide();
+            Close();
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -91,15 +91,25 @@ namespace workCourse
         
         private void button4_Click(object sender, EventArgs e)
         {
-            of.Show();
-            this.Hide();
+            OrderForm of = new OrderForm();
+            var res = of.ShowDialog();
+            if (res == DialogResult.Cancel)
+            {
+                dataGridView1.Rows.Clear();
+                Page(offset, limit);
+            }
+            //Hide();
         }
 
         private void button5_Click(object sender, EventArgs e)
         {
             SellingForm sf = new SellingForm();
-            sf.Show();
-            this.Hide();
+            var res = sf.ShowDialog();
+            if (res == DialogResult.Cancel)
+            {
+                dataGridView1.Rows.Clear();
+                Page(offset, limit);
+            }
 
         }
 
@@ -127,7 +137,7 @@ namespace workCourse
             offset -= Convert.ToInt32(limit);
             if (offset == -10)
             {
-                numFirPage = 1;
+                numFirPage = 1; 
                 offset += Convert.ToInt32(limit);
                 Page(offset, limit);
             }
@@ -142,11 +152,13 @@ namespace workCourse
 
         private void button8_Click(object sender, EventArgs e)
         {
-            
             orderFind of = new orderFind();
-            of.Show();
-            this.Hide();
-
+            var res = of.ShowDialog();
+            if (res == DialogResult.OK)
+            {
+                dataGridView1.Rows.Clear();
+                Page(offset, limit);
+            }
         }
     }
 }

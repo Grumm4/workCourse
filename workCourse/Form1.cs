@@ -15,9 +15,10 @@ namespace workCourse
 {
     public partial class Form1 : Form
     {
-        
+
+        object locker = new();
         public string pass = "";
-        public static string connStr = "server=chuc.caseum.ru;port=33333;user=st_2_20_8;database=is_2_20_st8_KURS;password=82411770;";
+        public static string connStr = "server=chuc.sdlik.ru;port=33333;user=st_2_20_8;database=is_2_20_st8_KURS;password=82411770;";
 
 
         //Переменная соединения
@@ -59,11 +60,9 @@ namespace workCourse
         private void Form1_Load(object sender, EventArgs e)
         {
             conn = new MySqlConnection(connStr);
-            button1.BackColor = Color.FromArgb(15, 51, 117);
-            button2.BackColor = Color.FromArgb(15, 51, 117);
+            //button1.BackColor = Color.FromArgb(15, 51, 117);
+            //button2.BackColor = Color.FromArgb(15, 51, 117);
         }
-
-        Main main = new Main();
         private void button2_Click(object sender, EventArgs e) => Application.Exit();
 
         private void button1_Click(object sender, EventArgs e) => Login();
@@ -80,6 +79,7 @@ namespace workCourse
         
         private void textBox2_TextChanged(object sender, EventArgs e)
         {
+            label3.Visible = false;
             textChang();
             
         }
@@ -88,6 +88,7 @@ namespace workCourse
         {
             textBox1.BackColor = Color.White;
             label1.BackColor = Color.White;
+            label3.Visible = false;
         }
 
         private void toolStripMenuItem3_Click(object sender, EventArgs e) => MessageBox.Show("Информация о программе", "Main");
@@ -96,16 +97,16 @@ namespace workCourse
 
         public int Login()
         {
-            if (textBox1.Text.Length == 0)
-            {
-                label1.BackColor = Color.FromArgb(155, 4, 0);
-                textBox1.BackColor = Color.FromArgb(155, 4, 0);
-            }
-            if (textBox2.Text.Length == 0)
-            {
-                label2.BackColor = Color.FromArgb(155, 4, 0);
-                textBox2.BackColor = Color.FromArgb(155, 4, 0);
-            }
+            //if (textBox1.Text.Length == 0)
+            //{
+            //    label1.BackColor = Color.FromArgb(155, 4, 0);
+            //    textBox1.BackColor = Color.FromArgb(155, 4, 0);
+            //}
+            //if (textBox2.Text.Length == 0)
+            //{
+            //    label2.BackColor = Color.FromArgb(155, 4, 0);
+            //    textBox2.BackColor = Color.FromArgb(155, 4, 0);
+            //}
             //Запрос в БД на предмет того, если ли строка с подходящим логином и паролем
             string sql = "SELECT * FROM t_user WHERE loginUser = @un and passUser = @up";
             //Открытие соединения
@@ -132,16 +133,18 @@ namespace workCourse
             
             if (table.Rows.Count > 0)
             {
+                Main main = new Main();
                 //Закрытие формы
                 this.Hide();
                 main.Show();
+                //main.Invoke(new Action(() => {  }));
                 
-                new ToastContentBuilder()
-                    .AddArgument("action", "viewConversation")
-                    .AddArgument("conversationId", 9813)
-                    .AddText("Выполнен вход")
-                    .AddText($"Пользователь: {textBox1.Text}")
-                    .Show(); // Not seeing the Show() me
+                //new ToastContentBuilder()
+                //    .AddArgument("action", "viewConversation")
+                //    .AddArgument("conversationId", 9813)
+                //    .AddText("Выполнен вход")
+                //    .AddText($"Пользователь: {textBox1.Text}")
+                //    .Show(); // Not seeing the Show() me
                 table = null;
                 adapter = null;
                 pass = null;
@@ -151,15 +154,22 @@ namespace workCourse
             else
             {
                 if (textBox1.Text.Length == 0 || textBox2.Text.Length == 0) 
-                { 
-                    MessageBox.Show("Поля не должны оставаться пустыми!", "Ошибка входа:"); 
+                {
+
+                    label3.Visible = true;
+                    label3.Text="Поля не должны оставаться пустыми!";
+                    System.Threading.Thread thread2 = new System.Threading.Thread(OnOff);
+                    thread2.Start();
                     
                     
                 }
-                if (table.Rows.Count == 0)
+                else if (table.Rows.Count == 0)
                 {
                     DeleteText();
-                    MessageBox.Show("Неверные данные авторизации!", "Ошибка входа:");
+                    label3.Visible = true;
+                    label3.Text = "Неверные данные авторизации!";
+                    System.Threading.Thread thread = new System.Threading.Thread(OnOff);
+                    thread.Start();
                 }
                 table = null;
                 adapter = null;
@@ -168,17 +178,37 @@ namespace workCourse
                 return 0;
             }
         }
+        void OnOff()
+        {
+            lock (locker)
+            {
+                for (int i = 0; i < 5; i++)
+                {
+                    if (label3.Visible == true)
+                    {
+                        label3.Invoke(new Action(() => { label3.Visible = false; }));
+                    }
+                    else if (label3.Visible == false)
+                    {
+                        label3.Invoke(new Action(() => { label3.Visible = true; }));
+                    }
+                    System.Threading.Thread.Sleep(500);
+
+                }
+                label3.Invoke(new Action(() => { label3.Visible = true; }));
+            }
+        }
         internal void DeleteText()
         {
             if (InvokeRequired)
             {
-                this.Invoke(new Action(async () => await Task.Run(() => textBox1.Text = "")));
-                this.Invoke(new Action(async () => await Task.Run(() => textBox2.Text = "")));
+                this.Invoke(new Action(async () => await Task.Run(() => textBox1.Text = String.Empty)));
+                this.Invoke(new Action(async () => await Task.Run(() => textBox2.Text = String.Empty)));
             }
             else
             {
-                textBox1.Text = "";
-                textBox2.Text = "";
+                textBox1.Text = String.Empty;
+                textBox2.Text = String.Empty;
             }
             
         }
@@ -190,7 +220,10 @@ namespace workCourse
             if (textBox2.Text.Length != 0)
             {
                 if (e.KeyData == Keys.Back)
+                {
                     textBox1.Text.Replace(Convert.ToString(textBox1.Text[textBox1.Text.Length - 1]), "");
+                    pass.Replace(pass[pass.Length - 1], Convert.ToChar(""));
+                }
             }
             
         }
@@ -202,9 +235,23 @@ namespace workCourse
             if(textBox2.Text.Length != 0)
             {
                 if (e.KeyData == Keys.Back)
-                    pass.Replace(Convert.ToString(pass[pass.Length - 1]), "");
+                { 
+                    pass = pass.Remove(pass.Length - 1, 1);
+                    //pass = pass.Replace(pass[pass.Length - 1].ToString(), "");
+                    //pass.Replace(pass[pass.Length - 1], Convert.ToChar(""));
+                }
             }
             
         }
+
+        //private void metroButton1_Click(object sender, EventArgs e)
+        //{
+        //    Login();
+        //}
+
+        //private void metroButton2_Click(object sender, EventArgs e)
+        //{
+        //    Application.Exit();
+        //}
     }
 }

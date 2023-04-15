@@ -24,6 +24,17 @@ namespace workCourse
             
         }
         //для orderForm и sellinForm, для заполнения текстбокса с ценой
+        //internal void newPriceEntry(int num, string title)
+        //{
+        //    conn.Open();
+        //    string query = $"SELECT `price` FROM `Main` WHERE `title` = '{title}'";
+        //    MySqlCommand command = new MySqlCommand(query, conn);
+        //    MySqlDataReader reader = command.ExecuteReader();
+        //    string price;
+        //    double res;
+        //    while (reader.Read()) { price = (reader.GetString(0)); res = Convert.ToDouble(price) * Convert.ToDouble(num.Value); tex.Tex = Convert.ToString(res); }
+        //    conn.Close();
+        //}
         internal virtual void PriceEntry(NumericUpDown num, TextBox tex, params ComboBox[] comboxes)
         {
             //MySqlConnection conn = new MySqlConnection(Form1.connStr);
@@ -160,6 +171,17 @@ namespace workCourse
             }
             catch (Exception ex) { MessageBox.Show(ex.Message); }
             finally { conn.Close(); }
+        }
+        internal string RemoveRub(string str)
+        {
+            string res = "";
+            foreach (var item in str)
+            {
+                if (item == (char)160 || item == '₽' || item == (char)32)
+                    continue;
+                res += item;
+            }
+            return res;
         }
     }
 }

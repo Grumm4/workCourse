@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using workCourse;
 using MySql.Data.MySqlClient;
+using System.Text.RegularExpressions;
 
 namespace workCourse
 {
@@ -31,11 +32,16 @@ namespace workCourse
 
         private void button1_Click(object sender, EventArgs e)
         {
-            label4.Text = ""; 
-            label6.Text = "";
+            string sql = $"SELECT phoneNumber, orderId, dateOrd, totalPrice FROM Orders WHERE phoneNumber = '{textBox1.Text}'";
+            FillDG(sql);
+        }
+        void FillDG(string sql)
+        {
+            label4.Text = String.Empty;
+            label6.Text = String.Empty;
             dataGridView1.Rows.Clear();
             data.Clear();
-            string sql = $"SELECT phoneNumber, orderId, dateOrd, totalPrice FROM Orders WHERE phoneNumber = '{textBox1.Text}'";
+            
             MySqlCommand cmd = new MySqlCommand(sql, conn);
             conn.Open();
             MySqlDataReader reader = cmd.ExecuteReader();
@@ -54,18 +60,19 @@ namespace workCourse
             foreach (string[] s in data)
             {
                 dataGridView1.Rows.Add(s);
-                
+
             }
-            if (dataGridView1.Rows.Count != 0)
-            {
-                ReturnPrice();
-            }
-            
         }
-        void ReturnPrice()
+
+        void ReturnPrice(int numb)
         {
             for (int i = 0; i < dataGridView1.Rows.Count; i++)
-                result += Convert.ToDecimal(dataGridView1[3,i].Value);
+            {
+                if (dataGridView1[0, i].Value.ToString() == dataGridView1[0,numb].Value.ToString())
+                {
+                    result += Convert.ToDecimal(dataGridView1[3, i].Value);
+                }
+            }
 
             label4.Text = String.Format("{0:c}", result).ToString();
 
@@ -93,13 +100,13 @@ namespace workCourse
 
         private void button2_Click(object sender, EventArgs e)
         {
-            mn.Show();
-            this.Close();
+            Close();
         }
 
         private void orderFind_Load(object sender, EventArgs e)
         {
-
+            string sql = $"SELECT phoneNumber, orderId, dateOrd, totalPrice FROM Orders";
+            FillDG(sql);
         }
 
         private void dataGridView1_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
@@ -113,6 +120,36 @@ namespace workCourse
             catch (System.ArgumentOutOfRangeException)
             {
                 MessageBox.Show("Не кликать по заголовкам!");
+            }
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+            if(textBox1.Text.Length == 0)
+            {
+                string sql = "SELECT phoneNumber, orderId, dateOrd, totalPrice FROM Orders";
+                dataGridView1.Rows.Clear();
+
+                FillDG(sql);
+            }
+            //else
+            //{
+            //    Regex regex = new Regex(@"^((\+7)+([0-9]){10})$");
+            //    MatchCollection match = regex.Matches(textBox1.Text);
+            //    if (match.Count > 0)
+            //    {
+                    
+            //    }
+                
+            //}
+        }
+
+        private void dataGridView1_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            int numb = e.RowIndex;
+            if (dataGridView1.Rows.Count != 0)
+            {
+                ReturnPrice(numb);
             }
         }
     }
